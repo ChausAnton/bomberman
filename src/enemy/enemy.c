@@ -2,7 +2,7 @@
 
 void init_slime() {
     slime_velocity = 2;
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < number_of_slimes; i++) {
         slime_R[i].x = 128 + (i * 64);
         slime_R[i].y = 128 + (i * 64);
 
@@ -17,7 +17,7 @@ void init_slime() {
 }
 
 void slimeMove(int slime_velocity) {
-    for(int i = 0; i < 4; i++) {
+    for(int i = 0; i < number_of_slimes; i++) {
         slime_wall_hitbox_R[i].h = player_R.h;
         slime_wall_hitbox_R[i].w = player_R.w;
 
@@ -51,6 +51,6 @@ void slimeMove(int slime_velocity) {
 }
 
 void SDL_RENDERS_SLIMES() {
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < number_of_slimes; i++)
         SDL_RenderCopy(renderer, slimeTex[i], NULL, &slime_R[i]);
 }

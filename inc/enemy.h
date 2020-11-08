@@ -7,12 +7,12 @@
 #include "map.h"
 #include "key_config.h"
 
-//const int number_of_slimes = 4;
+enum { number_of_slimes = 4 };
 
-SDL_Texture *slimeTex[4];
-SDL_Rect slime_R[4];
+SDL_Texture *slimeTex[number_of_slimes];
+SDL_Rect slime_R[number_of_slimes];
 
-SDL_Rect slime_wall_hitbox_R[4];
+SDL_Rect slime_wall_hitbox_R[number_of_slimes];
 
 int slime_velocity;
 
