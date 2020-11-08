@@ -26,7 +26,7 @@ int lvl2[20][25] = {
 void init_slime() {
     slime_velocity = 2;
     for (int i = 0; i < number_of_slimes; i++) {
-        slime_R[i].x = 64 + (i * 64);
+        slime_R[i].x = 192 + (i * 64);
         slime_R[i].y = 192 + (i * 64);
 
         slimeTex[i] = LoadTexture("resource/ast/enemies/Slime.png", renderer);
@@ -47,31 +47,36 @@ void init_slime() {
 
 void slimeMovePro(int slime_velocity) {
 	for (int i = 0; i < number_of_slimes; i++) {
-		if(lvl2[(slime_R[i].y - 2) / 64][(slime_R[i].x) / 64] == 0 && slime_up == true) {//move_up
+		printf("%d\n", (slime_R[i].y + 64) / 64);
+		printf("%d\n", (slime_R[i].x) / 64);
+		printf("%d\n", lvl2[(slime_R[i].y + 64) / 64][(slime_R[i].x) / 64]);
+		if(lvl2[(slime_R[i].y - 1) / 64][(slime_R[i].x) / 64] == 0 && lvl2[(slime_R[i].y - 1) / 64][(slime_R[i].x + 63) / 64] == 0 && slime_up == true) {//move_up
 			slimeTex[i] = LoadTexture("resource/ast/enemies/Slime.png", renderer);
 		    if(slime_R[i].y < 0) slime_R[i].y = 0;
 		    if(slime_R[i].y > 1280) slime_R[i].y = 1280;
 		    slime_R[i].y -= slime_velocity;
-			slime_left = false;
 			slime_down = false;
-			slime_rigth = false;
 		}
-		else if(lvl2[(slime_R[i].y + 62) / 64][(slime_R[i].x) / 64] == 0 && slime_down == true) {//move_down
+		else if(lvl2[(slime_R[i].y + 63) / 64][(slime_R[i].x) / 64] == 0 && lvl2[(slime_R[i].y + 63) / 64][(slime_R[i].x + 63) / 64] == 0 && slime_down == true) {//move_down
 			slimeTex[i] = LoadTexture("resource/ast/enemies/Slime.png", renderer);
 		    if(slime_R[i].y < 0) slime_R[i].y = 0;
 		    if(slime_R[i].y > 1280) slime_R[i].y = 1280;
 		    slime_R[i].y += slime_velocity;
-			slime_left = false;
-			slime_rigth = false;
 			slime_up = false;
 		}
-		else if (lvl2[(slime_R[i].y) / 64][(slime_R[i].x - 2) / 64] == 0 && slime_left == true) {//move_left
+		else if(lvl2[(slime_R[i].y) / 64][(slime_R[i].x + 63) / 64] == 0 && lvl2[(slime_R[i].y + 63) / 64][(slime_R[i].x + 63) / 64] == 0 && slime_rigth == true) {//move_right
+			slimeTex[i] = LoadTexture("resource/ast/enemies/Slime.png", renderer);
+		    if(slime_R[i].x < 0) slime_R[i].x = 0;
+		    if(slime_R[i].x > 1600) slime_R[i].x = 1600;
+		    slime_R[i].x += slime_velocity;
+
+
+		}
+		else if (lvl2[(slime_R[i].y) / 64][(slime_R[i].x - 1) / 64] == 0 && lvl2[(slime_R[i].y + 63) / 64][(slime_R[i].x - 1) / 64] == 0 && slime_left == true) {//move_left
 			slimeTex[i] = LoadTexture("resource/ast/enemies/Slime.png", renderer);
 		    if(slime_R[i].x < 0) slime_R[i].x = 0;
 		    if(slime_R[i].x > 1600) slime_R[i].x = 1600;
 		    slime_R[i].x -= slime_velocity;
-			slime_up = false;
-			slime_down = false;
 			slime_rigth = false;
 		}
 		else {
