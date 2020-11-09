@@ -1,18 +1,50 @@
 #include "../inc/key_config.h"
 #include "../inc/map.h"
+#include "../inc/enemy.h"
 
 int index_animation = 0;
 void playerMove(int player_velocity, int map[20][25]){
 	int move_time; // For sound_move
+	
     if (move_up && map[(player_R.y + 30)/64][(player_R.x + 8)/64] == 0 && map[(player_R.y + 30)/64][(player_R.x + 54)/64] == 0) {
-		if(player_R.y < 32) player_R.y = 32;
-		if(player_R.y > 1152) player_R.y = 1152;
-		player_R.y -= player_velocity;
+		t_slime *cur_slime = slimes;
+	 	bool crossing = false;
+		for (int i = 0; cur_slime != NULL; i++) {
+			int x_slime = cur_slime->slime_R.x;
+			int y_slime = cur_slime->slime_R.y;
+			int temp = (x_slime - player_R.x);
+			if (temp < 0 ) temp = temp * -1;
+			if( temp < 42) {
+				if ((y_slime + 40) != player_R.y);
+				else crossing = true;
+			}
+			cur_slime = cur_slime->next;
+		}
+		if (crossing == false) {
+			if(player_R.y < 32) player_R.y = 32;
+			if(player_R.y > 1152) player_R.y = 1152;
+			player_R.y -= player_velocity;
+		}
 	}
 	if (move_down && map[(player_R.y + 63)/64][(player_R.x + 8)/64] == 0 && map[(player_R.y + 63)/64][(player_R.x + 54)/64] == 0) {
-		if(player_R.y < 32) player_R.y = 32;
-		if(player_R.y > 1152) player_R.y = 1152;
-		player_R.y += player_velocity;
+		t_slime *cur_slime = slimes;
+	 	bool crossing = false;
+		for (int i = 0; cur_slime != NULL; i++) {
+			int x_slime = cur_slime->slime_R.x;
+			int y_slime = cur_slime->slime_R.y;
+			int temp = (x_slime - player_R.x);
+			if (temp < 0 ) temp = temp * -1;
+			if( temp < 42) {
+				if ((y_slime) != player_R.y + 40);
+				else crossing = true;
+			}
+			cur_slime = cur_slime->next;
+		}
+		if (crossing == false) {
+			if(player_R.y < 32) player_R.y = 32;
+			if(player_R.y > 1152) player_R.y = 1152;
+			player_R.y += player_velocity;
+		}
 	}
 	if (move_right && map[(player_R.y + 32)/64][(player_R.x + 56)/64] == 0 && map[(player_R.y + 61)/64][(player_R.x + 56)/64] == 0) {
 		if(player_R.x < 56) player_R.x = 56;
