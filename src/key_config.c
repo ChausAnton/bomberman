@@ -47,14 +47,44 @@ void playerMove(int player_velocity, int map[20][25]){
 		}
 	}
 	if (move_right && map[(player_R.y + 32)/64][(player_R.x + 56)/64] == 0 && map[(player_R.y + 61)/64][(player_R.x + 56)/64] == 0) {
-		if(player_R.x < 56) player_R.x = 56;
-		if(player_R.x > 1480) player_R.x = 1480;
-		player_R.x += player_velocity;
+		t_slime *cur_slime = slimes;
+	 	bool crossing = false;
+		for (int i = 0; cur_slime != NULL; i++) {
+			int x_slime = cur_slime->slime_R.x;
+			int y_slime = cur_slime->slime_R.y;
+			int temp = (y_slime - player_R.y);
+			if (temp < 0 ) temp = temp * -1;
+			if( temp < 42) {
+				if (x_slime != (player_R.x + 40));
+				else crossing = true;
+			}
+			cur_slime = cur_slime->next;
+		}
+		if (crossing == false) {
+			if(player_R.x < 56) player_R.x = 56;
+			if(player_R.x > 1480) player_R.x = 1480;
+			player_R.x += player_velocity;
+		}
 	}
 	if (move_left && map[(player_R.y + 32)/64][(player_R.x + 6)/64] == 0 && map[(player_R.y + 61)/64][(player_R.x + 6)/64] == 0){
-		if(player_R.x < 56) player_R.x = 56;
-		if(player_R.x > 1480) player_R.x = 1480;
-		player_R.x -= player_velocity;
+		t_slime *cur_slime = slimes;
+	 	bool crossing = false;
+		for (int i = 0; cur_slime != NULL; i++) {
+			int x_slime = cur_slime->slime_R.x;
+			int y_slime = cur_slime->slime_R.y;
+			int temp = (y_slime - player_R.y);
+			if (temp < 0 ) temp = temp * -1;
+			if( temp < 42) {
+				if ((x_slime + 40) != player_R.x);
+				else crossing = true;
+			}
+			cur_slime = cur_slime->next;
+		}
+		if (crossing == false) {
+			if(player_R.x < 56) player_R.x = 56;
+			if(player_R.x > 1480) player_R.x = 1480;
+			player_R.x -= player_velocity;
+		}
 	}
 
 	if (move_right) {
