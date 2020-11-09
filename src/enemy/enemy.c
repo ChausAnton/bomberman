@@ -70,20 +70,41 @@ void slimeMove(int slime_velocity) {
 		if(map[(cur_slime->slime_R.y - 1) / 64][(cur_slime->slime_R.x) / 64] == 0 && map[(cur_slime->slime_R.y - 1) / 64][(cur_slime->slime_R.x + 63) / 64] == 0) {//move_up
 			int temp = (cur_slime->slime_R.x - x_player);
 			if (temp < 0 ) temp = temp * -1;
-			if( temp < 63) {
+			if( temp < 42) {
 				if (cur_slime->slime_R.y != (y_player + 40))
 					slime_up = true;
 			}
 			else slime_up = true;
 		}
 		if(map[(cur_slime->slime_R.y) / 64][(cur_slime->slime_R.x + 63) / 64] == 0 && map[(cur_slime->slime_R.y + 63) / 64][(cur_slime->slime_R.x + 63) / 64] == 0) {//move_right
-			slime_right = true;
+			int temp = (cur_slime->slime_R.y - y_player);
+			if (temp < 0 ) temp = temp * -1;
+			if(temp < 42) {
+				if ((cur_slime->slime_R.x + 40) != x_player)
+					slime_right = true;
+			}
+			else slime_right = true;
 		}
 		if (map[(cur_slime->slime_R.y) / 64][(cur_slime->slime_R.x - 1) / 64] == 0 && map[(cur_slime->slime_R.y + 63) / 64][(cur_slime->slime_R.x - 1) / 64] == 0) {//move_left
-			slime_left = true;
+
+			int temp = (cur_slime->slime_R.y - y_player);
+			if (temp < 0 ) temp = temp * -1;
+			if(temp < 42) {
+				if ((cur_slime->slime_R.x) != (x_player + 40))
+					slime_left = true;
+			}
+			else slime_left = true;
 		}
 		if(map[(cur_slime->slime_R.y + 63) / 64][(cur_slime->slime_R.x) / 64] == 0 && map[(cur_slime->slime_R.y + 63) / 64][(cur_slime->slime_R.x + 63) / 64] == 0) {//move_down
-			slime_down = true;
+
+			int temp = (cur_slime->slime_R.x - x_player);
+			if (temp < 0 ) temp = temp * -1;
+			if( temp < 42) {
+				if ((cur_slime->slime_R.y + 40) != (y_player))
+					slime_down = true;
+			}
+			else slime_down = true;
+			
 		}
 		
 		if(cur_slime->gener == true) {
