@@ -2,14 +2,8 @@
 #ifndef ENEMY
 #define ENEMY
 
-#include <ncurses.h>
 #include "game.h"
-#include "texture_manager.h"
-#include "map.h"
-#include "key_config.h"
-#include <stdbool.h>
-#include <stdio.h>
-#include <time.h>
+
 enum { number_of_slimes = 1 };
 
 SDL_Texture *slimeTex[number_of_slimes];

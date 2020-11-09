@@ -5,9 +5,11 @@ int main() {
     const int frameDelay = 1000 / FPS;
     Uint32 frameStart;
     int frameTime;
-
-    init("Bomberman", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1600, 1280, false);
-    init_texture();//Init Texture
+    
+    init("Bomberman", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 2000, 1280, false);
+    //Init Texture
+    
+    init_texture();
     while(isRunning){
         frameStart = SDL_GetTicks();
         handleEvents();

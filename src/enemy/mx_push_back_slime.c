@@ -1,4 +1,4 @@
-#include "../../inc/game.h"
+#include "../../inc/enemy.h"
 
 void mx_push_back_slime(t_slime **list, int x, int y) {
     t_slime *current = *list;

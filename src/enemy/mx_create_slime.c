@@ -1,4 +1,4 @@
-#include "../../inc/game.h"
+#include "../../inc/enemy.h"
 
 t_slime *mx_create_slime(int x, int y) {
     t_slime *slime = (t_slime *) malloc(sizeof(t_slime));

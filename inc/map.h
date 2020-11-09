@@ -24,6 +24,4 @@ SDL_Texture *down_left_corner;
 SDL_Texture *down_right_corner;
 SDL_Texture *slime;
 
-int map[20][25];
-
 #endif

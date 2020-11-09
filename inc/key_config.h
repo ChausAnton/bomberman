@@ -10,7 +10,10 @@ bool move_down;
 bool move_left;
 bool move_right;
 
-void playerMove(int player_velocity);
+bool bomb_placed;
+
+void playerMove(int, int [20][25]);
 void Bomb();
+void boom(int, int [20][25]);
 
 #endif
