@@ -63,9 +63,18 @@ void slimeMove(int slime_velocity) {
 		slime_down = false;
 		slime_left = false;
 		slime_right = false;
+		
+		int x_player = player_R.x;
+		int y_player = player_R.y;
 
 		if(map[(cur_slime->slime_R.y - 1) / 64][(cur_slime->slime_R.x) / 64] == 0 && map[(cur_slime->slime_R.y - 1) / 64][(cur_slime->slime_R.x + 63) / 64] == 0) {//move_up
-			slime_up = true;
+			int temp = (cur_slime->slime_R.x - x_player);
+			if (temp < 0 ) temp = temp * -1;
+			if( temp < 63) {
+				if (cur_slime->slime_R.y != (y_player + 40))
+					slime_up = true;
+			}
+			else slime_up = true;
 		}
 		if(map[(cur_slime->slime_R.y) / 64][(cur_slime->slime_R.x + 63) / 64] == 0 && map[(cur_slime->slime_R.y + 63) / 64][(cur_slime->slime_R.x + 63) / 64] == 0) {//move_right
 			slime_right = true;
