@@ -61,7 +61,7 @@ void update(){
     bomb_R.w = 64;
     
     playerMove(player_velocity);
-    slimeMovePro(slime_velocity);
+    slimeMove(slime_velocity);
 } 
 
 void render(){

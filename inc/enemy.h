@@ -9,6 +9,7 @@
 #include "key_config.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <time.h>
 enum { number_of_slimes = 1 };
 
 SDL_Texture *slimeTex[number_of_slimes];
@@ -26,7 +27,7 @@ typedef struct s_slime {
     int up;
     int down;
     int left;
-    int rigth;
+    int right;
 }   t_slime;
 
 t_slime *mx_create_slime(int);
@@ -34,6 +35,8 @@ t_slime *mx_create_slime(int);
 void mx_push_back_slime(t_slime **, int );
 
 t_slime *slimes;
+
+void slimeMove(int slime_velocity);
 
 void init_slime();
 
@@ -43,7 +46,7 @@ void SDL_RENDERS_SLIMES();
 
 bool slime_up;
 bool slime_down;
-bool slime_rigth;
+bool slime_right;
 bool slime_left;
 
 #endif
