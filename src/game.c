@@ -9,7 +9,6 @@ void init(const char *title, int x_pos, int y_pos, int width, int height, bool f
         printf("\nTerminal Handler initialized.\n\n");
         printf("Subsystems initialized.\n");
         // Music
-       
         Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
         init_sound(1);
         // Window
@@ -99,7 +98,10 @@ void initGame() {
     t_Message_rect.x = 1600;  
     t_Message_rect.y = 600;
     t_Message_rect.w = 400; 
-    t_Message_rect.h = 100;     
+    t_Message_rect.h = 100;
+
+    background_R.w = 1600;
+    background_R.h = 1280;
 }
 void LoadMap(int arr[20][25]){
     for(int row = 0; row < 20; ++row)
@@ -119,7 +121,15 @@ void handleEvents(){
                 case SDLK_LEFT: move_left = true; break;
                 case SDLK_RIGHT: move_right = true; break;
                 case SDLK_e: if(!bomb_placed) { Bomb(map); bomb_placed = true;} break;
-                case SDLK_ESCAPE: pause(); break;
+                case SDLK_ESCAPE: if (!is_pause) {
+                    mPausedTicks = SDL_GetTicks();
+                    pauseMenu();
+                    is_pause = true;
+                    SDL_RenderCopy(renderer, b_Tex, NULL, &background_R);
+                    SDL_RenderPresent(renderer); break;}
+                                else {
+                                    mStartTicks = SDL_GetTicks() - mPausedTicks;
+                                    is_pause = false; break;}
             }
         }
         if(event.type == SDL_KEYUP) switch( event.key.keysym.sym ) {
@@ -141,7 +151,7 @@ void update(){
     playerMove(player_velocity, map);
     slimeMove(slime_velocity);    
     if(bomb_placed){
-        bombTime = SDL_GetTicks() - bombStart;
+        bombTime = SDL_GetTicks() - (bombStart + mStartTicks);
         if(bombTime > 3000) boom(bomb_power, map);        
     }
 } 
@@ -157,6 +167,7 @@ void render(){
     SDL_RenderCopy(renderer, b_Message, NULL, &b_Message_rect);
     SDL_RenderCopy(renderer, s_Message, NULL, &s_Message_rect);
     SDL_RenderCopy(renderer, t_Message, NULL, &t_Message_rect);
+
     SDL_RenderPresent(renderer);
 }
 
@@ -180,10 +191,13 @@ void clean(){
 }
 
 void restart(){
+    mx_pop_index_slime(&slimes, 0);
+    mx_pop_index_slime(&slimes, 0);
     SDL_DestroyTexture(bombTex);
+    bombTex = NULL;
     SDL_RenderClear(renderer);
     initGame();
 }
 void pauseMenu(){
-    restart();
+    //restart();
 }

@@ -5,7 +5,6 @@
 int index_animation = 0;
 void playerMove(int player_velocity, int map[20][25]){
 	int move_time; // For sound_move
-	
     if (move_up && map[(player_R.y + 30)/64][(player_R.x + 8)/64] == 0 && map[(player_R.y + 30)/64][(player_R.x + 54)/64] == 0) {
 		t_slime *cur_slime = slimes;
 	 	bool crossing = false;
@@ -172,6 +171,5 @@ void boom(int bomb_power, int map[20][25]){
 	Mix_PlayChannel(-1, put_bomb_sound, 0);
 	bomb_placed = false;
 	bombTime = 0;
-	SDL_DestroyTexture(bombTex);
 	bombTex = NULL;
 }

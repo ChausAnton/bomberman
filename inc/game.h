@@ -66,6 +66,15 @@ SDL_Rect b_Message_rect;
 SDL_Rect s_Message_rect;
 SDL_Rect t_Message_rect;
 
+// Menu
+SDL_Texture* b_Tex;
+SDL_Rect background_R;
+
+//Timer
+Uint32 mStartTicks;
+Uint32 mPausedTicks;
+bool is_pause;
+
 // Window and renderer
 SDL_Window *window;
 SDL_Renderer *renderer;
