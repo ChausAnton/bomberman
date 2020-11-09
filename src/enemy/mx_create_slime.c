@@ -9,10 +9,6 @@ t_slime *mx_create_slime(int i) {
     slime->slime_wall_hitbox_R.h = 64;
     slime->slime_wall_hitbox_R.w = 64;
     slime->slimeTex = LoadTexture("resource/ast/enemies/Slime.png", renderer);
-    slime->up = rand() % 4 + 1;
-    slime->down= rand() % 4 + 1;
-    slime->left = rand() % 4 + 1;
-    slime->right = rand() % 4 + 1;
     slime->next = NULL;
     return slime;
 }

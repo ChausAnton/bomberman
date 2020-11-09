@@ -24,10 +24,6 @@ typedef struct s_slime {
     SDL_Rect slime_R;
     SDL_Rect slime_wall_hitbox_R;
     struct s_slime *next;
-    int up;
-    int down;
-    int left;
-    int right;
 }   t_slime;
 
 t_slime *mx_create_slime(int);

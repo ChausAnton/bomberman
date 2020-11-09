@@ -114,7 +114,6 @@ void slimeMove(int slime_velocity) {
 		
 		if(gener == true) {
 			random_slime = (rand() % 400 + 1);
-			printf("%d\n", random_slime);
 		}
 
 		if(100 <= random_slime && random_slime <= 200 && slime_right == true) {
