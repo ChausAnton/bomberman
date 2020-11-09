@@ -26,6 +26,12 @@ t_slime *mx_create_slime(int, int);
 
 void mx_push_back_slime(t_slime **, int, int);
 
+void mx_pop_back_slime(t_slime **);
+
+void mx_pop_front_slime(t_slime **);
+
+void mx_pop_index_slime(t_slime **, int);
+
 t_slime *slimes;
 
 void slimeMove(int slime_velocity);
