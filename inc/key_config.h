@@ -4,7 +4,6 @@
 
 #include "../inc/game.h"
 #include "../inc/texture_manager.h"
-#include "enemy.h"
 
 bool move_up;
 bool move_down;

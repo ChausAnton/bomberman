@@ -4,7 +4,6 @@
 
 #include "game.h"
 #include "texture_manager.h"
-#include "enemy.h"
 
 void constrMap();
 void LoadMap();

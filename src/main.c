@@ -7,7 +7,7 @@ int main() {
     int frameTime;
 
     init("Bomberman", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1600, 1280, false);
-
+    init_texture();//Init Texture
     while(isRunning){
         frameStart = SDL_GetTicks();
         handleEvents();

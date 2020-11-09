@@ -2,10 +2,10 @@
 
 int lvl2[20][25] = {
     {7,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,8},
+    {5,0,0,0,1,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
     {5,0,1,0,1,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
-    {5,2,1,0,1,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
     {5,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
-    {5,0,2,1,1,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
+    {5,0,2,1,1,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
     {5,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
     {5,1,1,1,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
     {5,0,1,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
@@ -29,9 +29,6 @@ void init_slime() {
     for (int i = 1; i < number_of_slimes; i++) {
 		mx_push_back_slime(&slimes, i);
     }
-	/*if (slimes != NULL) {
-		write(2, "!!!!!!!!!!!", 11);
-	}*/
 	slime_velocity = 2;
 	slime_up = false;
 	slime_down = false;
@@ -57,28 +54,24 @@ int compare(int a1, int a2, int a3, int a4) {
 
 
 void slimeUP(t_slime *cur_slime, int slime_velocity) {
-	cur_slime->slimeTex = LoadTexture("resource/ast/enemies/Slime.png", renderer);
 	if(cur_slime->slime_R.y < 0) cur_slime->slime_R.y = 0;
 	if(cur_slime->slime_R.y > 1280) cur_slime->slime_R.y = 1280;
 	cur_slime->slime_R.y -= slime_velocity;
 }
 
 void slimeRIGHT(t_slime *cur_slime, int slime_velocity) {
-	cur_slime->slimeTex = LoadTexture("resource/ast/enemies/Slime.png", renderer);
 	if(cur_slime->slime_R.x < 0) cur_slime->slime_R.x = 0;
 	if(cur_slime->slime_R.x > 1600) cur_slime->slime_R.x = 1600;
 	cur_slime->slime_R.x += slime_velocity;
 }
 
 void slimeLEFT(t_slime *cur_slime, int slime_velocity) {
-	cur_slime->slimeTex = LoadTexture("resource/ast/enemies/Slime.png", renderer);
 	if(cur_slime->slime_R.x < 0) cur_slime->slime_R.x = 0;
 	if(cur_slime->slime_R.x > 1600) cur_slime->slime_R.x = 1600;
 	cur_slime->slime_R.x -= slime_velocity;
 }
 
 void slimeDOWN(t_slime *cur_slime, int slime_velocity) {
-	cur_slime->slimeTex = LoadTexture("resource/ast/enemies/Slime.png", renderer);
 	if(cur_slime->slime_R.y < 0) cur_slime->slime_R.y = 0;
 	if(cur_slime->slime_R.y > 1280) cur_slime->slime_R.y = 1280;
 	cur_slime->slime_R.y += slime_velocity;
@@ -107,9 +100,6 @@ void slimeMove(int slime_velocity) {
 		}
 		if(lvl2[(cur_slime->slime_R.y + 63) / 64][(cur_slime->slime_R.x) / 64] == 0 && lvl2[(cur_slime->slime_R.y + 63) / 64][(cur_slime->slime_R.x + 63) / 64] == 0) {//move_down
 			slime_down = true;
-		}
-		if(slime_up == false && slime_down == false && slime_left == false && slime_right == true) {
-			cur_slime->slimeTex = LoadTexture("resource/ast/enemies/Slime.png", renderer);
 		}
 		
 		if(gener == true) {

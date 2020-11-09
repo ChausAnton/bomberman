@@ -1,4 +1,4 @@
-#include "../inc/texture_manager.h"
+#include "../inc/game.h"
 
 SDL_Texture *LoadTexture(const char *texture, SDL_Renderer *ren){
     SDL_Surface *tmpSurface = IMG_Load(texture);
