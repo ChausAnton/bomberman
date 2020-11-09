@@ -23,18 +23,20 @@ typedef struct s_slime {
     SDL_Texture *slimeTex;
     SDL_Rect slime_R;
     SDL_Rect slime_wall_hitbox_R;
+    bool gener;
+    int random_slime;
     struct s_slime *next;
 }   t_slime;
 
-t_slime *mx_create_slime(int);
+t_slime *mx_create_slime(int, int);
 
-void mx_push_back_slime(t_slime **, int );
+void mx_push_back_slime(t_slime **, int, int);
 
 t_slime *slimes;
 
 void slimeMove(int slime_velocity);
 
-void init_slime();
+void init_slime(int, int);
 
 void slimeMovePro(int);
 

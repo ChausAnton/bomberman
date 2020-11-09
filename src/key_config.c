@@ -3,7 +3,7 @@
 int lvl[20][25] = {
     {7,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,8},
     {5,0,0,0,1,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
-    {5,0,1,2,1,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
+    {5,0,1,0,1,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
     {5,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
     {5,0,2,1,1,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
     {5,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
@@ -50,7 +50,7 @@ void playerMove(int player_velocity)  {
 	if (move_right) {
 		/////////////SoundMove////////////////
 		move_time = SDL_GetTicks() - move_start;
-		if(move_time > 200){
+		if(move_time > 300){
 			Mix_PlayChannel( -1, step_sound, 0 );
 			move_start = SDL_GetTicks();
 		}
@@ -65,7 +65,7 @@ void playerMove(int player_velocity)  {
 	else if (move_left){
 		/////////////SoundMove////////////////
 		move_time = SDL_GetTicks() - move_start;
-		if(move_time > 200){
+		if(move_time > 300){
 			Mix_PlayChannel( -1, step_sound, 0 );
 			move_start = SDL_GetTicks();
 		}
@@ -80,7 +80,7 @@ void playerMove(int player_velocity)  {
 	else if (move_up) {
 		/////////////SoundMove////////////////
 		move_time = SDL_GetTicks() - move_start;
-		if(move_time > 200){
+		if(move_time > 300){
 			Mix_PlayChannel( -1, step_sound, 0 );
 			move_start = SDL_GetTicks();
 		}
@@ -95,7 +95,7 @@ void playerMove(int player_velocity)  {
 	else if (move_down) {
 		/////////////SoundMove////////////////
 		move_time = SDL_GetTicks() - move_start;
-		if(move_time > 200){
+		if(move_time > 300){
 			Mix_PlayChannel( -1, step_sound, 0 );
 			move_start = SDL_GetTicks();
 		}

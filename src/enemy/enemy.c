@@ -23,17 +23,19 @@ int lvl2[20][25] = {
     {9,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,10},
 };
 
-void init_slime() {
-	slimes = mx_create_slime(0);
-	srand(time(0));
-    for (int i = 1; i < number_of_slimes; i++) {
-		mx_push_back_slime(&slimes, i);
-    }
+void init_slime(int x, int y) {
+	if(slimes == NULL) {
+		slimes = mx_create_slime(x, y);
+	}
+	else mx_push_back_slime(&slimes, x, y);
+
 	slime_velocity = 2;
 	slime_up = false;
 	slime_down = false;
 	slime_left = false;
 	slime_right = false;
+
+	srand(time(0));
 }
 
 int compare(int a1, int a2, int a3, int a4) {
@@ -77,10 +79,6 @@ void slimeDOWN(t_slime *cur_slime, int slime_velocity) {
 	cur_slime->slime_R.y += slime_velocity;
 }
 
-bool gener = true;
-
-int random_slime = 0;
-
 void slimeMove(int slime_velocity) {
 	t_slime *cur_slime = slimes;
 	for (int i = 0; cur_slime != NULL; i++) {
@@ -88,6 +86,7 @@ void slimeMove(int slime_velocity) {
 		slime_down = false;
 		slime_left = false;
 		slime_right = false;
+
 
 		if(lvl2[(cur_slime->slime_R.y - 1) / 64][(cur_slime->slime_R.x) / 64] == 0 && lvl2[(cur_slime->slime_R.y - 1) / 64][(cur_slime->slime_R.x + 63) / 64] == 0) {//move_up
 			slime_up = true;
@@ -102,37 +101,37 @@ void slimeMove(int slime_velocity) {
 			slime_down = true;
 		}
 		
-		if(gener == true) {
-			random_slime = (rand() % 400 + 1);
+		if(cur_slime->gener == true) {
+			cur_slime->random_slime = (rand() % 400 + 1);
 		}
 
-		if(100 <= random_slime && random_slime <= 200 && slime_right == true) {
+		if(100 <= cur_slime->random_slime && cur_slime->random_slime <= 200 && slime_right == true) {
 			slimeRIGHT(cur_slime, slime_velocity);
-			gener = false;
+			cur_slime->gener = false;
 		}
 
 
-		if(200 <= random_slime && random_slime <= 300 && slime_left == true) {
+		if(200 <= cur_slime->random_slime && cur_slime->random_slime <= 300 && slime_left == true) {
 			slimeLEFT(cur_slime, slime_velocity);
-			gener = false;
+			cur_slime->gener = false;
 		}
 
 
-		if(300 <= random_slime && random_slime <= 400 && slime_down == true) {
+		if(300 <= cur_slime->random_slime && cur_slime->random_slime <= 400 && slime_down == true) {
 			slimeDOWN(cur_slime, slime_velocity);
-			gener = false;
+			cur_slime->gener = false;
 		}
 
-		if(1 <= random_slime && random_slime <= 100 && slime_up == true) {
+		if(1 <= cur_slime->random_slime && cur_slime->random_slime <= 100 && slime_up == true) {
 			slimeUP(cur_slime, slime_velocity);
-			gener = false;
+			cur_slime->gener = false;
 		}
 
 
-		if ((1 <= random_slime && random_slime <= 100) && slime_up == false) gener = true;
-		else if ((100 <= random_slime && random_slime <= 200) && slime_right == false) gener = true;
-		else if ((200 <= random_slime && random_slime <= 300) && slime_left == false) gener = true;
-		else if ((300 <= random_slime && random_slime <= 400) && slime_down == false) gener = true;
+		if ((1 <= cur_slime->random_slime && cur_slime->random_slime <= 100) && slime_up == false) cur_slime->gener = true;
+		else if ((100 <= cur_slime->random_slime && cur_slime->random_slime <= 200) && slime_right == false) cur_slime->gener = true;
+		else if ((200 <= cur_slime->random_slime && cur_slime->random_slime <= 300) && slime_left == false) cur_slime->gener = true;
+		else if ((300 <= cur_slime->random_slime && cur_slime->random_slime <= 400) && slime_down == false) cur_slime->gener = true;
 		
 
 		cur_slime = cur_slime->next;

@@ -23,7 +23,8 @@ void init(const char *title, int x_pos, int y_pos, int width, int height, bool f
     player_R.y = 64;
     player_velocity = 2;
 
-    init_slime();
+    init_slime(196, 128);
+    init_slime(64, 8*64);
 
     playerTex = LoadTexture("resource/ast/Bomberman/Bomberman_Front.png", renderer);
     gScreenSurface = SDL_GetWindowSurface(window);    
