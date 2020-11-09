@@ -121,46 +121,29 @@ void slimeMove(int slime_velocity) {
 			slimeRIGHT(cur_slime, slime_velocity);
 			gener = false;
 		}
-		else if ((1 <= random_slime && random_slime <= 100) && slime_up == false) gener = true;
-		else if ((100 <= random_slime && random_slime <= 200) && slime_right == false) gener = true;
-		else if ((200 <= random_slime && random_slime <= 300) && slime_left == false) gener = true;
-		else if ((300 <= random_slime && random_slime <= 400) && slime_down == false) gener = true;
-		//else if(slime_up == true && slime_left == true && slime_down == true) gener = true;
+
 
 		if(200 <= random_slime && random_slime <= 300 && slime_left == true) {
 			slimeLEFT(cur_slime, slime_velocity);
 			gener = false;
 		}
-		else if ((1 <= random_slime && random_slime <= 100) && slime_up == false) gener = true;
-		else if ((100 <= random_slime && random_slime <= 200) && slime_right == false) gener = true;
-		else if ((200 <= random_slime && random_slime <= 300) && slime_left == false) gener = true;
-		else if ((300 <= random_slime && random_slime <= 400) && slime_down == false) gener = true;
-		//else if(slime_right == true && slime_up == true && slime_down == true) gener = true;
+
 
 		if(300 <= random_slime && random_slime <= 400 && slime_down == true) {
 			slimeDOWN(cur_slime, slime_velocity);
 			gener = false;
 		}
-		else if ((1 <= random_slime && random_slime <= 100) && slime_up == false) gener = true;
-		else if ((100 <= random_slime && random_slime <= 200) && slime_right == false) gener = true;
-		else if ((200 <= random_slime && random_slime <= 300) && slime_left == false) gener = true;
-		else if ((300 <= random_slime && random_slime <= 400) && slime_down == false) gener = true;
-		//else if(slime_right == true && slime_left == true && slime_up == true) gener = true;
 
 		if(1 <= random_slime && random_slime <= 100 && slime_up == true) {
 			slimeUP(cur_slime, slime_velocity);
 			gener = false;
 		}
-		else if ((1 <= random_slime && random_slime <= 100) && slime_up == false) gener = true;
+
+
+		if ((1 <= random_slime && random_slime <= 100) && slime_up == false) gener = true;
 		else if ((100 <= random_slime && random_slime <= 200) && slime_right == false) gener = true;
 		else if ((200 <= random_slime && random_slime <= 300) && slime_left == false) gener = true;
 		else if ((300 <= random_slime && random_slime <= 400) && slime_down == false) gener = true;
-		//else if(slime_right == true && slime_left == true && slime_down == true) gener = true;
-
-		/*if ((1 <= random_slime && random_slime <= 100) && slime_up == false) gener = true;
-		else if ((100 <= random_slime && random_slime <= 200) && slime_right == false) gener = true;
-		else if ((200 <= random_slime && random_slime <= 300) && slime_left == false) gener = true;
-		else if ((300 <= random_slime && random_slime <= 400) && slime_down == false) gener = true;*/
 		
 
 		cur_slime = cur_slime->next;
