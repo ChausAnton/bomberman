@@ -183,22 +183,22 @@ void explosionAnimation(int bomb_power, int map[20][25]){
  	if (map[(bomb_R.y / 64) - bomb_power][bomb_R.x / 64] == 1 || map[(bomb_R.y / 64) - bomb_power][bomb_R.x / 64] == 0){
 		explosion_R.x = bomb_R.x;
   		explosion_R.y = bomb_R.y - bomb_power*64;
-		SDL_RenderCopy(renderer, loaded_explosion, NULL, &explosion_R); 
+		SDL_RenderCopy(renderer, loaded_explosion_up, NULL, &explosion_R); 
  	 }//up
  	if (map[(bomb_R.y / 64) + bomb_power][bomb_R.x / 64] == 1 || map[(bomb_R.y / 64) + bomb_power][bomb_R.x / 64] == 0 ){ 
 		explosion_R.x = bomb_R.x;
   		explosion_R.y = bomb_R.y + bomb_power*64;
-		SDL_RenderCopy(renderer, loaded_explosion, NULL, &explosion_R); 
+		SDL_RenderCopy(renderer, loaded_explosion_down, NULL, &explosion_R); 
   	}//down
  	if (map[bomb_R.y / 64][(bomb_R.x / 64) + bomb_power] == 1 || map[bomb_R.y / 64][(bomb_R.x / 64) + bomb_power] == 0 ){
 		explosion_R.x = bomb_R.x + bomb_power*64;
   		explosion_R.y = bomb_R.y;
-		SDL_RenderCopy(renderer, loaded_explosion, NULL, &explosion_R); 
+		SDL_RenderCopy(renderer, loaded_explosion_right, NULL, &explosion_R); 
   	} //right
  	if (map[bomb_R.y / 64][(bomb_R.x / 64) - bomb_power] == 1|| map[bomb_R.y / 64][(bomb_R.x / 64) - bomb_power] == 0){
 		explosion_R.x = bomb_R.x - bomb_power*64;
   		explosion_R.y = bomb_R.y;
-		SDL_RenderCopy(renderer, loaded_explosion, NULL, &explosion_R); 
+		SDL_RenderCopy(renderer, loaded_explosion_left, NULL, &explosion_R); 
   	} //left
 	//SDL_RenderCopy(renderer, loaded_explosion, NULL, &explosion_R); 
 	}

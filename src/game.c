@@ -154,7 +154,7 @@ void handleEvents(){
                                     }
                 case SDLK_1: init_sound(1); break;
                 case SDLK_2: init_sound(2); break;
-                case SDLK_3: lose(); break;
+                case SDLK_r: restart(); break;
             }
         }
         if(event.type == SDL_KEYUP) switch( event.key.keysym.sym ) {
@@ -247,9 +247,10 @@ void clean(){
 }
 
 void restart(){
+    LoseGame = 0;
+    is_pause = false;
 	while(slimes != NULL) {
 		mx_pop_index_slime(&slimes, 0);
-		slimes = slimes->next;
     }
     SDL_DestroyTexture(bombTex);
     bombTex = NULL;

@@ -107,6 +107,10 @@ SDL_Texture *loaded_bomb;
 SDL_Texture *loaded_white_bomb;
 SDL_Texture *loaded_explosion;
 SDL_Texture *loaded_menu_bomb;
+SDL_Texture *loaded_explosion_up;
+SDL_Texture *loaded_explosion_left;
+SDL_Texture *loaded_explosion_down;
+SDL_Texture *loaded_explosion_right;
 
 SDL_Rect explosion_R;
 

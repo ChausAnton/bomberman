@@ -39,6 +39,10 @@ void init_texture(){
     loaded_menu_bomb = LoadTexture("resource/ast/Bomberman/Bomb1.png", renderer);
     loaded_white_bomb = LoadTexture("resource/ast/Bomberman/White_Bomb.png", renderer);
     loaded_explosion = LoadTexture("resource/ast/Bomberman/Explosion.png", renderer);
+    loaded_explosion_up = LoadTexture("resource/ast/Bomberman/Explosion_Up.png", renderer);
+    loaded_explosion_down = LoadTexture("resource/ast/Bomberman/Explosion_Down.png", renderer);
+    loaded_explosion_right = LoadTexture("resource/ast/Bomberman/Explosion_Right.png", renderer);
+    loaded_explosion_left = LoadTexture("resource/ast/Bomberman/Explosion_Left.png", renderer);
  
     ground = LoadTexture("resource/ast/terrain/Ground.png", renderer);
     breakable_stone = LoadTexture("resource/ast/terrain/Breakable_Stone.png", renderer);
