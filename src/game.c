@@ -36,8 +36,8 @@ void init_timer() {
     Time_rect.h = 70;
 
     char buffer[10];
-
-    timer_time = 200 - (timer_start - a)/1000;
+    timer_start = SDL_GetTicks();
+    timer_time = 200 - (int)((timer_start - a)/1000);
     if(timer_time > 9){
         Time_rect.x = 1670;
         Time_rect.y = 705;
@@ -177,16 +177,16 @@ void handleEvents(){
                 case SDLK_RIGHT: move_right = true; break;
                 case SDLK_e: if(!bomb_placed) { Bomb(map); bomb_placed = true;} break;
                 case SDLK_ESCAPE: if (!is_pause) {
-                    mPausedTicks = SDL_GetTicks();
-                    pauseMenu();
-                    a = SDL_GetTicks();
-                    is_pause = true;
-                    SDL_RenderCopy(renderer, pauseTex, NULL, &pause_R);
-                    SDL_RenderPresent(renderer); break;}
-                                else {
-                                    a = SDL_GetTicks() - mPausedTicks;
-                                    mStartTicks = SDL_GetTicks() - mPausedTicks;
-                                    is_pause = false; break;
+                                        mPausedTicks = SDL_GetTicks();
+                                        pauseMenu();
+                                        is_pause = true;
+                                        SDL_RenderCopy(renderer, pauseTex, NULL, &pause_R);
+                                        SDL_RenderPresent(renderer); break;
+                                    }
+                                    else {
+                                        a += (SDL_GetTicks() - mPausedTicks);
+                                        mStartTicks = SDL_GetTicks() - mPausedTicks;
+                                        is_pause = false; break;
                                     }
                 case SDLK_1: init_sound(1); break;
                 case SDLK_2: init_sound(2); break;

@@ -64,6 +64,8 @@ int timer_time;
 Uint32 a;
 ///////////////////////////////////////////////////
 
+Uint32  timer_do_pause;
+
 SDL_Rect Time_rect;//////////////
 
 SDL_Surface* TimeMessage;/////////////

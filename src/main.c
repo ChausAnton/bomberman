@@ -14,15 +14,16 @@ int main() {
     init_texture();
     while(isRunning){
         frameStart = SDL_GetTicks();
-        timer_start = SDL_GetTicks();
         handleEvents();
         if (!is_pause) {
+            timer_do_pause = SDL_GetTicks();
             update();
             render();
+            init_timer();
         }
         frameTime = SDL_GetTicks() - frameStart;
         if(frameDelay > frameTime) SDL_Delay(frameDelay - frameTime);
-        init_timer();
+        
     }
     clean();
 }
