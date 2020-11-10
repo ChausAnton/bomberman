@@ -58,6 +58,18 @@ TTF_Font *arcade;
 SDL_Color White;
 SDL_Color Red;
 
+////////////////////////////////////////////////
+Uint32  timer_start;
+int timer_time;
+Uint32 a;
+///////////////////////////////////////////////////
+
+SDL_Rect Time_rect;//////////////
+
+SDL_Surface* TimeMessage;/////////////
+
+SDL_Texture* Time_Message;////////////
+
 SDL_Surface* healthMessage;
 SDL_Surface* bombMessage;
 SDL_Surface* scoreMessage;
@@ -96,6 +108,8 @@ Uint32 move_start;
 // Map
 int map[20][25];
 
+
+
 //Loaded texture
 SDL_Texture *LoadTexture(const char *, SDL_Renderer *);
 SDL_Texture *loaded_anim_right[2];
@@ -126,5 +140,6 @@ void init_texture();
 void init_sound(int);
 void initMenu();
 void lose();
+void init_timer();
 
 #endif

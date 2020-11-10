@@ -106,7 +106,7 @@ void slimeMove(int slime_velocity) {
 			if(temp < 42 || temp_bomb < 42) {
 				if (((cur_slime->slime_R.x) != (x_player + 40)) && ((cur_slime->slime_R.x) != (x_bomb + 40)))
 					slime_left = true;
-				else if ((cur_slime->slime_R.x + 40) == x_player && temp < 42){//to kill bomber
+				else if ((cur_slime->slime_R.x) == (x_player + 40) && temp < 42){//to kill bomber
 					lose();
 				}
 			}

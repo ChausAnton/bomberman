@@ -21,9 +21,40 @@ void init(const char *title, int x_pos, int y_pos, int width, int height, bool f
         }
         isRunning = true;
     }
+    a = 0;
     initGame();
-    initMenu();
 }
+
+void init_timer() {
+    Red.r = 235;
+    Red.g = 94; 
+    Red.b = 52;
+
+    Time_rect.x = 1670;
+    Time_rect.y = 710;
+    Time_rect.w = 40;
+    Time_rect.h = 70;
+
+    char buffer[10];
+
+    timer_time = 200 - (timer_start - a)/1000;
+    if(timer_time > 9){
+        Time_rect.x = 1670;
+        Time_rect.y = 705;
+        Time_rect.w = 60;
+        Time_rect.h = 75;
+    }
+    if(timer_time > 99){
+        Time_rect.x = 1670;
+        Time_rect.y = 700;
+        Time_rect.w = 70;
+        Time_rect.h = 80;
+    }
+
+    TimeMessage = TTF_RenderText_Solid(arcade, SDL_itoa(timer_time, buffer, 10), Red);
+    Time_Message = SDL_CreateTextureFromSurface(renderer, TimeMessage); 
+}
+
 void initIntro() {
    // is_intro = false;
 
@@ -44,10 +75,10 @@ void initMenu() {
     White.g = 255; 
     White.b = 255;
 
-    healthMessage = TTF_RenderText_Solid(arcade, " H e a l t h ", White);
+    healthMessage = TTF_RenderText_Solid(arcade, " H e a lth ", White);
     bombMessage = TTF_RenderText_Solid(arcade, " B o m b s ", White);
     scoreMessage = TTF_RenderText_Solid(arcade, " S c o r e ", White); 
-    timeMessage = TTF_RenderText_Solid(arcade, " T i m e ", White);
+    timeMessage = TTF_RenderText_Solid(arcade, " Ti m e ", White);
 
     h_Message = SDL_CreateTextureFromSurface(renderer, healthMessage); 
     h_Message_rect.x = 1600;  
@@ -78,6 +109,9 @@ void initMenu() {
 }
 
 void initGame() {
+
+    initMenu();
+    init_timer();
     LoseGame = 0;
     player_R.h = 64;
     player_R.w = 64;
@@ -222,27 +256,52 @@ void render(){
     SDL_RenderCopy(renderer, b_Message, NULL, &b_Message_rect);
     SDL_RenderCopy(renderer, s_Message, NULL, &s_Message_rect);
     SDL_RenderCopy(renderer, t_Message, NULL, &t_Message_rect);
+    SDL_RenderCopy(renderer, Time_Message, NULL, &Time_rect);
     if(LoseGame == 1)
         SDL_RenderCopy(renderer, GameOver_Message, NULL, &GameOver_Message_rect);
     SDL_RenderPresent(renderer);
 }
 
 void clean(){   
-    // Free loaded sounds
+     // Free loaded sounds
     Mix_FreeMusic(backgroundSound);
     backgroundSound = NULL;
     Mix_FreeChunk(put_bomb_sound);
     put_bomb_sound = NULL;
     Mix_FreeChunk(step_sound);
     step_sound = NULL; 
-
+    
+    // Free window
     SDL_DestroyWindow(window);
     window =  NULL;    
     SDL_DestroyRenderer(renderer);
     renderer = NULL;
+
+    ///Free loaded text
+    SDL_FreeSurface(GameOver);
+    SDL_FreeSurface(healthMessage);
+    SDL_FreeSurface(timeMessage);
+    SDL_FreeSurface(scoreMessage);
+    SDL_FreeSurface(bombMessage);
+
+    //Free Loaded textures
+    SDL_DestroyTexture(loaded_front);
+    SDL_DestroyTexture(loaded_bomb);
+    SDL_DestroyTexture(loaded_explosion);
+    SDL_DestroyTexture(loaded_menu_bomb);
+    SDL_DestroyTexture(loaded_white_bomb);
+    SDL_DestroyTexture(h_Message);
+    SDL_DestroyTexture(t_Message);
+    SDL_DestroyTexture(b_Message);
+    SDL_DestroyTexture(s_Message);
+    SDL_DestroyTexture(GameOver_Message);
+    SDL_DestroyTexture(playerTex);
+    SDL_DestroyTexture(bombTex);
+
     Mix_Quit();
     IMG_Quit();
     SDL_Quit();
+    TTF_Quit();
     printf("Game cleaned.\n\n");
 }
 
