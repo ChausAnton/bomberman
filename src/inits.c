@@ -6,7 +6,7 @@ void init_sound(int a){
     case 1:
         step_sound = Mix_LoadWAV( "resource/msc/minecraft_move_on_ground.wav" );
         put_bomb_sound = Mix_LoadWAV( "resource/msc/penetration.wav" );
-        backgroundSound = Mix_LoadMUS( "resource/msc/Green Day - Holiday.wavvgyb");
+        backgroundSound = Mix_LoadMUS( "/resource/msc/Green Day - Holiday.wav");
         explosion_sound = Mix_LoadWAV( "resource/msc/torpedo_explosion.wav" );
         die_sound = Mix_LoadWAV( "resource/msc/autsch-oh-that-hurts.wav" );
         if( backgroundSound== NULL ) printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
@@ -39,8 +39,7 @@ void init_texture(){
     loaded_menu_bomb = LoadTexture("resource/ast/Bomberman/Bomb1.png", renderer);
     loaded_white_bomb = LoadTexture("resource/ast/Bomberman/White_Bomb.png", renderer);
     loaded_explosion = LoadTexture("resource/ast/Bomberman/Explosion.png", renderer);
-
-
+ 
     ground = LoadTexture("resource/ast/terrain/Ground.png", renderer);
     breakable_stone = LoadTexture("resource/ast/terrain/Breakable_Stone.png", renderer);
     stone = LoadTexture("resource/ast/terrain/Stone.png", renderer);
@@ -54,7 +53,8 @@ void init_texture(){
     up_right_corner = LoadTexture("resource/ast/terrain/UpRightCorner.png", renderer);
     down_left_corner = LoadTexture("resource/ast/terrain/DownLeftCorner.png", renderer);
     down_right_corner = LoadTexture("resource/ast/terrain/DownRightCorner.png", renderer);
-    // Pause
-    b_Tex = LoadTexture("resource/img/pause.png", renderer);
-}
 
+    pauseTex = LoadTexture("resource/img/pause.png", renderer);
+
+   // introTex = LoadTexture("resource/img/van.png", renderer);
+}

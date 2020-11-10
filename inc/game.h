@@ -21,13 +21,12 @@
 #include "../inc/key_config.h"
 //#include "enemy.h"
 
-//////Lose///////
 int LoseGame;
 
 // Textures
 SDL_Texture *playerTex;
 SDL_Texture *bombTex;
-
+SDL_Texture *menuBombTex;
 
 // Surfaces
 SDL_Surface *gScreenSurface;
@@ -38,8 +37,7 @@ int player_velocity;
 
 // Bomb
 SDL_Rect bomb_R;
-SDL_Rect explosion_R;
-SDL_Rect menu_bomb_R;
+SDL_Rect menu_Bomb_R;
 int bomb_power;
 
 // Music
@@ -64,23 +62,23 @@ SDL_Surface* healthMessage;
 SDL_Surface* bombMessage;
 SDL_Surface* scoreMessage;
 SDL_Surface* timeMessage;
-SDL_Surface* GameOver;/////////////////
+SDL_Surface* GameOver;
 
 SDL_Texture* h_Message;
 SDL_Texture* b_Message;
 SDL_Texture* s_Message;
 SDL_Texture* t_Message;
-SDL_Texture* GameOver_Message;//////////////////
+SDL_Texture* GameOver_Message;
 
 SDL_Rect h_Message_rect;
 SDL_Rect b_Message_rect;
 SDL_Rect s_Message_rect;
 SDL_Rect t_Message_rect;
-SDL_Rect GameOver_Message_rect;////////////
+SDL_Rect GameOver_Message_rect;
 
-// Menu
-SDL_Texture* b_Tex;
-SDL_Rect background_R;
+// Pause
+SDL_Texture* pauseTex;
+SDL_Rect pause_R;
 
 //Timer
 Uint32 mStartTicks;
@@ -110,7 +108,7 @@ SDL_Texture *loaded_white_bomb;
 SDL_Texture *loaded_explosion;
 SDL_Texture *loaded_menu_bomb;
 
-SDL_Rect exp_R;
+SDL_Rect explosion_R;
 
 void init(const char *title, int x_pos, int y_pos, int width, int height, bool fullscreen);
 void initGame();
@@ -122,7 +120,7 @@ void restart();
 void pauseMenu();
 void init_texture();
 void init_sound(int);
-void init_menu();////////
-void lose();///////////
+void initMenu();
+void lose();
 
 #endif

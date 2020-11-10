@@ -158,7 +158,7 @@ void Bomb(){
 	bombStart = SDL_GetTicks();
 	bomb_R.x = (((player_R.x + 32) / 64) * 64);
 	bomb_R.y = (((player_R.y + 32) / 64) * 64);
-	//bombTex = loaded_bomb;
+	//bombTex = loaded_bomb;	
 }
 
 void bombAnimation(){
@@ -201,31 +201,29 @@ void explosionAnimation(int bomb_power, int map[20][25]){
 
 void boom(int bomb_power, int map[20][25]){
 	explosion_placed = true;
-	
+
 	if (map[(bomb_R.y - bomb_power*64) / 64][bomb_R.x / 64] == 1) map[(bomb_R.y - bomb_power*64) / 64][bomb_R.x / 64] = 0; //up
 	if (map[(bomb_R.y + bomb_power*64) / 64][bomb_R.x / 64] == 1) map[(bomb_R.y + bomb_power*64) / 64][bomb_R.x / 64] = 0; //down
 	if (map[bomb_R.y / 64][(bomb_R.x + bomb_power*64) / 64] == 1) map[bomb_R.y / 64][(bomb_R.x + bomb_power*64) / 64] = 0; //left
 	if (map[bomb_R.y / 64][(bomb_R.x - bomb_power*64) / 64] == 1) map[bomb_R.y / 64][(bomb_R.x - bomb_power*64) / 64] = 0; //right
-	
-	if (bomb_R.y / 64 == (player_R.y + 32)/64 && bomb_R.x / 64 == (player_R.x + 32)/64){ 
-		lose();
-		}
-	else if ((bomb_R.y - bomb_power*64)/ 64 == (player_R.y + 32)/64 && bomb_R.x / 64 == (player_R.x + 32)/64) {
-		lose();
-	}
-	else if ((bomb_R.y + bomb_power*64)/ 64 == (player_R.y + 32)/64 && bomb_R.x / 64 == (player_R.x + 32)/64) {
-		lose();
-	}
-	else if (bomb_R.y / 64 == (player_R.y + 32)/64 && (bomb_R.x + bomb_power*64) / 64 == (player_R.x + 32)/64) {
-		lose();
-	}
-	else if (bomb_R.y / 64 == (player_R.y + 32)/64 && (bomb_R.x - bomb_power*64) / 64 == (player_R.x + 32)/64) {
-		lose();
-	}
 
+	if (bomb_R.y / 64 == (player_R.y + 32)/64 && bomb_R.x / 64 == (player_R.x + 32)/64) lose();
+	else if ((bomb_R.y - bomb_power*64)/ 64 == (player_R.y + 32)/64 && bomb_R.x / 64 == (player_R.x + 32)/64) lose();
+	else if ((bomb_R.y + bomb_power*64)/ 64 == (player_R.y + 32)/64 && bomb_R.x / 64 == (player_R.x + 32)/64) lose();
+	else if (bomb_R.y / 64 == (player_R.y + 32)/64 && (bomb_R.x + bomb_power*64) / 64 == (player_R.x + 32)/64) lose();
+	else if (bomb_R.y / 64 == (player_R.y + 32)/64 && (bomb_R.x - bomb_power*64) / 64 == (player_R.x + 32)/64) lose();
+
+	t_slime *cur_slime  = slimes;
+	for(int i = 0; cur_slime != NULL; ++i) {
+		if (bomb_R.y / 64 == (cur_slime->slime_R.y + 32)/64 && bomb_R.x / 64 == (cur_slime->slime_R.x + 32)/64) mx_pop_index_slime(&slimes, i);
+		else if ((bomb_R.y - bomb_power*64)/ 64 == (cur_slime->slime_R.y + 32)/64 && bomb_R.x / 64 == (cur_slime->slime_R.x + 32)/64) mx_pop_index_slime(&slimes, i);
+		else if ((bomb_R.y + bomb_power*64)/ 64 == (cur_slime->slime_R.y + 32)/64 && bomb_R.x / 64 == (cur_slime->slime_R.x + 32)/64) mx_pop_index_slime(&slimes, i);
+		else if (bomb_R.y / 64 == (cur_slime->slime_R.y + 32)/64 && (bomb_R.x + bomb_power*64) / 64 == (cur_slime->slime_R.x + 32)/64) mx_pop_index_slime(&slimes, i);
+		else if (bomb_R.y / 64 == (cur_slime->slime_R.y + 32)/64 && (bomb_R.x - bomb_power*64) / 64 == (cur_slime->slime_R.x + 32)/64) mx_pop_index_slime(&slimes, i);
+		cur_slime = cur_slime->next;
+	}
 	Mix_PlayChannel(-1, explosion_sound, 0);
 	bomb_placed = false;
-	//bomb_R.x = 0;
-	//bomb_R.y = 0;
+	//bombTime = 0;
 	bombTex = NULL;
 }
