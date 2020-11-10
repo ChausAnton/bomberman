@@ -169,7 +169,7 @@ void bombAnimation(){
 }
 
 void explosionAnimation(int bomb_power, int map[20][25]){
-	if (bombTime > 3000 && bombTime < 3500){
+	if (bombTime > 2000 && bombTime < 2500){
 		if (map[(bomb_R.y) / 64][bomb_R.x / 64] == 1 || map[(bomb_R.y) / 64][bomb_R.x / 64] == 0){
 			explosion_R.x = bomb_R.x;
   			explosion_R.y = bomb_R.y;
