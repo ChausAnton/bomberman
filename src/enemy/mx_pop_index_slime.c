@@ -2,7 +2,8 @@
 
 void mx_pop_index_slime(t_slime **list, int index) {
     if(*list == NULL) return;
-
+    score_num += 100;
+    menu_score();
     if(index <= 0) {
         mx_pop_front_slime(list);
         return;

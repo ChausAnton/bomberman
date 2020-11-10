@@ -3,6 +3,7 @@
  
 void init(const char *title, int x_pos, int y_pos, int width, int height, bool fullscreen){
     int flags = 0;
+    score_num = 0;
     TTF_Init();
     if(fullscreen) flags = SDL_WINDOW_FULLSCREEN;
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0){
@@ -25,6 +26,7 @@ void init(const char *title, int x_pos, int y_pos, int width, int height, bool f
     initGame();
     initMenu();
     initMap();
+    menu_score();
 }
 
 void init_timer() {
@@ -73,6 +75,29 @@ void initIntro() {
     exit_R.w = 300;
     exit_R.h = 80;    
 }
+
+void menu_score(){
+    
+    Red.r = 50;
+    Red.g = 168; 
+    Red.b = 145;
+
+    if(score_num == 0){
+        score_num_rect.x = 1775;
+        score_num_rect.y = 500;
+        score_num_rect.w = 46; 
+        score_num_rect.h = 95;
+    } else {
+        score_num_rect.x = 1765;
+        score_num_rect.y = 500;
+        score_num_rect.w = 82;
+        score_num_rect.h = 100;
+    }
+    char buffer[10];
+    ScoreNumMessage = TTF_RenderText_Solid(arcade, SDL_itoa(score_num, buffer, 10), Red);
+    Score_Num_Message = SDL_CreateTextureFromSurface(renderer, ScoreNumMessage); 
+}
+
 void initMenu() {
     is_pause = false;
     	
@@ -328,6 +353,7 @@ void render(){
         SDL_RenderCopy(renderer, s_Message, NULL, &s_Message_rect);
         SDL_RenderCopy(renderer, t_Message, NULL, &t_Message_rect);
         SDL_RenderCopy(renderer, Time_Message, NULL, &Time_rect);
+        SDL_RenderCopy(renderer, Score_Num_Message, NULL, &score_num_rect);
         SDL_RenderPresent(renderer);
     }
     else if (is_lose) {
@@ -349,6 +375,7 @@ void render(){
         SDL_RenderCopy(renderer, s_Message, NULL, &s_Message_rect);
         SDL_RenderCopy(renderer, t_Message, NULL, &t_Message_rect);
         SDL_RenderCopy(renderer, Time_Message, NULL, &Time_rect);
+        SDL_RenderCopy(renderer, Score_Num_Message, NULL, &score_num_rect);
         SDL_RenderPresent(renderer);
     }
 }
@@ -412,9 +439,14 @@ void restart(){
     if(explosion_placed) explosionTex = NULL;
 
     a = SDL_GetTicks();
+    Mix_FreeChunk(die_sound);
+    die_sound = NULL;
     initMenu();
     initMap();
     initGame();
+    init_sound(1);
+    score_num = 0;
+    menu_score();
 }
 void pauseMenu(){
     //restart();

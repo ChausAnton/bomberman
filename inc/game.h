@@ -65,6 +65,13 @@ Uint32 a;
 TTF_Font *arcade;
 SDL_Color White;
 
+// Score
+int score_num;
+SDL_Rect score_num_rect;
+SDL_Surface* ScoreNumMessage;
+SDL_Texture* Score_Num_Message;
+///////
+
 Uint32  timer_do_pause;
 SDL_Rect Time_rect;
 SDL_Surface* TimeMessage;
@@ -167,5 +174,5 @@ void init_texture();
 void init_sound(int);
 void lose();
 void init_timer();
-
+void menu_score();
 #endif
