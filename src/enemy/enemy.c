@@ -67,41 +67,63 @@ void slimeMove(int slime_velocity) {
 		int x_player = player_R.x;
 		int y_player = player_R.y;
 
+		int x_bomb = bomb_R.x;
+		int y_bomb = bomb_R.y;
+		
 		if(map[(cur_slime->slime_R.y - 1) / 64][(cur_slime->slime_R.x) / 64] == 0 && map[(cur_slime->slime_R.y - 1) / 64][(cur_slime->slime_R.x + 63) / 64] == 0) {//move_up
 			int temp = (cur_slime->slime_R.x - x_player);
+			int temp_bomb = (cur_slime->slime_R.x - x_bomb);
+			if (temp_bomb < 0 ) temp_bomb = temp_bomb * -1;
 			if (temp < 0 ) temp = temp * -1;
-			if( temp < 42) {
-				if (cur_slime->slime_R.y != (y_player + 40))
+			if( temp < 42 || temp_bomb < 42) {
+				if ((cur_slime->slime_R.y != (y_player + 40)) && (cur_slime->slime_R.y != (y_bomb + 40)))
 					slime_up = true;
+				else if ((cur_slime->slime_R.y) == (y_player + 40)){//to kill bomber
+					//kill_player();
+				}
 			}
 			else slime_up = true;
 		}
 		if(map[(cur_slime->slime_R.y) / 64][(cur_slime->slime_R.x + 63) / 64] == 0 && map[(cur_slime->slime_R.y + 63) / 64][(cur_slime->slime_R.x + 63) / 64] == 0) {//move_right
 			int temp = (cur_slime->slime_R.y - y_player);
+			int temp_bomb = (cur_slime->slime_R.y - y_bomb);
+			if (temp_bomb < 0 ) temp_bomb = temp_bomb * -1;
 			if (temp < 0 ) temp = temp * -1;
-			if(temp < 42) {
-				if ((cur_slime->slime_R.x + 40) != x_player)
+			if(temp < 42 || temp_bomb < 42) {
+				if (((cur_slime->slime_R.x + 40) != x_player) && ((cur_slime->slime_R.x + 40) != x_bomb))
 					slime_right = true;
+				else if ((cur_slime->slime_R.x + 40) == x_player){//to kill bomber
+					//kill_player();
+				}
 			}
 			else slime_right = true;
 		}
 		if (map[(cur_slime->slime_R.y) / 64][(cur_slime->slime_R.x - 1) / 64] == 0 && map[(cur_slime->slime_R.y + 63) / 64][(cur_slime->slime_R.x - 1) / 64] == 0) {//move_left
-
 			int temp = (cur_slime->slime_R.y - y_player);
+			int temp_bomb = (cur_slime->slime_R.y - y_bomb);
+			if (temp_bomb < 0 ) temp_bomb = temp_bomb * -1;
 			if (temp < 0 ) temp = temp * -1;
-			if(temp < 42) {
-				if ((cur_slime->slime_R.x) != (x_player + 40))
+			if(temp < 42 || temp_bomb < 42) {
+				if (((cur_slime->slime_R.x) != (x_player + 40)) && ((cur_slime->slime_R.x) != (x_bomb + 40)))
 					slime_left = true;
+				else if ((cur_slime->slime_R.x + 40) == x_player){//to kill bomber
+					//kill_player();
+				}
 			}
 			else slime_left = true;
 		}
 		if(map[(cur_slime->slime_R.y + 63) / 64][(cur_slime->slime_R.x) / 64] == 0 && map[(cur_slime->slime_R.y + 63) / 64][(cur_slime->slime_R.x + 63) / 64] == 0) {//move_down
-
+			int temp_bomb = (cur_slime->slime_R.x - x_bomb);
 			int temp = (cur_slime->slime_R.x - x_player);
+			if (temp_bomb < 0 ) temp_bomb = temp_bomb * -1;
 			if (temp < 0 ) temp = temp * -1;
-			if( temp < 42) {
-				if ((cur_slime->slime_R.y + 40) != (y_player))
+			if( temp < 42 || temp_bomb < 42) {
+				if (((cur_slime->slime_R.y + 40) != (y_player)) && ((cur_slime->slime_R.y + 40) != (y_bomb)))
 					slime_down = true;
+				else if ((cur_slime->slime_R.y + 40) == (y_player)){//to kill bomber
+					//kill_player();
+				}
+				
 			}
 			else slime_down = true;
 			
