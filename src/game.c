@@ -179,10 +179,12 @@ void handleEvents(){
                 case SDLK_ESCAPE: if (!is_pause) {
                     mPausedTicks = SDL_GetTicks();
                     pauseMenu();
+                    a = SDL_GetTicks();
                     is_pause = true;
                     SDL_RenderCopy(renderer, pauseTex, NULL, &pause_R);
                     SDL_RenderPresent(renderer); break;}
                                 else {
+                                    a = SDL_GetTicks() - mPausedTicks;
                                     mStartTicks = SDL_GetTicks() - mPausedTicks;
                                     is_pause = false; break;
                                     }
@@ -306,6 +308,9 @@ void clean(){
 }
 
 void restart(){
+    a =  SDL_GetTicks();
+    //timer_start = SDL_GetTicks() - a;
+    timer_time = 0;
     LoseGame = 0;
     is_pause = false;
 	while(slimes != NULL) {
