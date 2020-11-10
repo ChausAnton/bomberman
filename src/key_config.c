@@ -147,7 +147,7 @@ void playerMove(int player_velocity, int map[20][25]){
 		if (index_animation > 12) index_animation = 0;
 	}
 	else 
-		playerTex = LoadTexture("/resource/ast/Bomberman/Bomberman_Front.png", renderer);	
+		playerTex = loaded_font;	
 }
 
 void Bomb(){
@@ -155,20 +155,80 @@ void Bomb(){
 	bombStart = SDL_GetTicks();
 	bomb_R.x = (((player_R.x + 32) / 64) * 64);
 	bomb_R.y = (((player_R.y + 32) / 64) * 64);
-	bombTex = LoadTexture("resource/ast/Bomberman/Bomb.png", renderer);	
+	bombTex = loaded_bomb;
 }
 
 void boom(int bomb_power, int map[20][25]){
+	
+	if (map[(bomb_R.y - bomb_power*64) / 64][bomb_R.x / 64] == 1 || map[(bomb_R.y - bomb_power*64) / 64][bomb_R.x / 64] == 0){
+		exp_R.x = bomb_R.x;
+		exp_R.y = bomb_R.y - bomb_power*64;
+		SDL_RenderCopy(renderer, explosion, NULL, &exp_R); 
+		SDL_RenderCopy(renderer, explosion, NULL, &bomb_R); 
+		}//up
+	if (map[(bomb_R.y + bomb_power*64) / 64][bomb_R.x / 64] == 1 || map[(bomb_R.y + bomb_power*64) / 64][bomb_R.x / 64] == 0){ 
+		exp_R.x = bomb_R.x;
+		exp_R.y = bomb_R.y + bomb_power*64;
+		SDL_RenderCopy(renderer, explosion, NULL, &exp_R);
+		SDL_RenderCopy(renderer, explosion, NULL, &bomb_R); 
+		}//down
+	if (map[bomb_R.y / 64][(bomb_R.x + bomb_power*64) / 64] == 1 || map[bomb_R.y / 64][(bomb_R.x + bomb_power*64) / 64] == 0){
+		exp_R.x = bomb_R.x + bomb_power*64;
+		exp_R.y = bomb_R.y;
+		SDL_RenderCopy(renderer, explosion, NULL, &exp_R);
+		SDL_RenderCopy(renderer, explosion, NULL, &bomb_R); 
+		} //left
+	if (map[bomb_R.y / 64][(bomb_R.x - bomb_power*64) / 64] == 1 || map[bomb_R.y / 64][(bomb_R.x + bomb_power*64) / 64] == 0){
+		exp_R.x = bomb_R.x - bomb_power*64;
+		exp_R.y = bomb_R.y;
+		SDL_RenderCopy(renderer, explosion, NULL, &exp_R);
+		SDL_RenderCopy(renderer, explosion, NULL, &bomb_R); 
+		} //right
+	SDL_RenderPresent(renderer);
+	SDL_Delay(200); 
+	
 	if (map[(bomb_R.y - bomb_power*64) / 64][bomb_R.x / 64] == 1) map[(bomb_R.y - bomb_power*64) / 64][bomb_R.x / 64] = 0; //up
 	if (map[(bomb_R.y + bomb_power*64) / 64][bomb_R.x / 64] == 1) map[(bomb_R.y + bomb_power*64) / 64][bomb_R.x / 64] = 0; //down
 	if (map[bomb_R.y / 64][(bomb_R.x + bomb_power*64) / 64] == 1) map[bomb_R.y / 64][(bomb_R.x + bomb_power*64) / 64] = 0; //left
 	if (map[bomb_R.y / 64][(bomb_R.x - bomb_power*64) / 64] == 1) map[bomb_R.y / 64][(bomb_R.x - bomb_power*64) / 64] = 0; //right
-	if (bomb_R.y / 64 == (player_R.y + 32)/64 && bomb_R.x / 64 == (player_R.x + 32)/64) isRunning = false;
-	else if ((bomb_R.y - bomb_power*64)/ 64 == (player_R.y + 32)/64 && bomb_R.x / 64 == (player_R.x + 32)/64) isRunning = false;
-	else if ((bomb_R.y + bomb_power*64)/ 64 == (player_R.y + 32)/64 && bomb_R.x / 64 == (player_R.x + 32)/64) isRunning = false;
-	else if (bomb_R.y / 64 == (player_R.y + 32)/64 && (bomb_R.x + bomb_power*64) / 64 == (player_R.x + 32)/64) isRunning = false;
-	else if (bomb_R.y / 64 == (player_R.y + 32)/64 && (bomb_R.x - bomb_power*64) / 64 == (player_R.x + 32)/64) isRunning = false;
-	Mix_PlayChannel(-1, put_bomb_sound, 0);
+	
+	if (bomb_R.y / 64 == (player_R.y + 32)/64 && bomb_R.x / 64 == (player_R.x + 32)/64){ 
+		Mix_PlayChannel(-1, die_sound, 0);
+		//SDL_Delay(900);
+		//is_pause = true;
+		lose();
+		//isRunning = false;
+		}
+	else if ((bomb_R.y - bomb_power*64)/ 64 == (player_R.y + 32)/64 && bomb_R.x / 64 == (player_R.x + 32)/64) {
+		Mix_PlayChannel(-1, die_sound, 0);
+		//SDL_Delay(900);
+		//is_pause = true;
+		lose();
+		//isRunning = false;
+	}
+	else if ((bomb_R.y + bomb_power*64)/ 64 == (player_R.y + 32)/64 && bomb_R.x / 64 == (player_R.x + 32)/64) {
+		Mix_PlayChannel(-1, die_sound, 0);
+		//SDL_Delay(900);
+		//is_pause = true;
+		lose();
+		//isRunning = false;
+	}
+	else if (bomb_R.y / 64 == (player_R.y + 32)/64 && (bomb_R.x + bomb_power*64) / 64 == (player_R.x + 32)/64) {
+		Mix_PlayChannel(-1, die_sound, 0);
+		//SDL_Delay(900);
+		//is_pause = true;
+		lose();
+		//isRunning = false;
+	}
+	else if (bomb_R.y / 64 == (player_R.y + 32)/64 && (bomb_R.x - bomb_power*64) / 64 == (player_R.x + 32)/64) {
+		Mix_PlayChannel(-1, die_sound, 0);
+		//SDL_Delay(900);
+		//is_pause = true;
+		lose();
+		//isRunning = false;
+	}
+
+	Mix_PlayChannel(-1, explosion_sound, 0);
 	bomb_placed = false;
 	bombTime = 0;
 	bombTex = NULL;

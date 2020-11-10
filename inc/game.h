@@ -35,13 +35,15 @@ int player_velocity;
 
 // Bomb
 SDL_Rect bomb_R;
-SDL_Rect pause_bomb_R;
+SDL_Rect menu_bomb_R;
 int bomb_power;
 
 // Music
 Mix_Music *backgroundSound;
 Mix_Chunk *put_bomb_sound;
 Mix_Chunk *step_sound;
+Mix_Chunk *explosion_sound;
+Mix_Chunk *die_sound;
 
 // Bomb timer
 Uint32 bombStart;
@@ -50,21 +52,25 @@ int bombTime;
 // TXT Necessaries
 TTF_Font *arcade;
 SDL_Color White;
+SDL_Color Red;
 
 SDL_Surface* healthMessage;
 SDL_Surface* bombMessage;
 SDL_Surface* scoreMessage;
 SDL_Surface* timeMessage;
+SDL_Surface* GameOver;/////////////////
 
 SDL_Texture* h_Message;
 SDL_Texture* b_Message;
 SDL_Texture* s_Message;
 SDL_Texture* t_Message;
+SDL_Texture* GameOver_Message;//////////////////
 
 SDL_Rect h_Message_rect;
 SDL_Rect b_Message_rect;
 SDL_Rect s_Message_rect;
 SDL_Rect t_Message_rect;
+SDL_Rect GameOver_Message_rect;////////////
 
 // Menu
 SDL_Texture* b_Tex;
@@ -92,6 +98,11 @@ SDL_Texture *loaded_anim_right[2];
 SDL_Texture *loaded_anim_left[2];
 SDL_Texture *loaded_anim_up[2];
 SDL_Texture *loaded_anim_down[2];
+SDL_Texture *loaded_font;
+SDL_Texture *loaded_bomb;
+SDL_Texture *explosion;
+
+SDL_Rect exp_R;
 
 void init(const char *title, int x_pos, int y_pos, int width, int height, bool fullscreen);
 void initGame();
@@ -103,5 +114,7 @@ void restart();
 void pauseMenu();
 void init_texture();
 void init_sound(int);
+void init_menu();////////
+void lose();///////////
 
 #endif

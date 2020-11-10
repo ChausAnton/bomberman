@@ -23,47 +23,12 @@ void init(const char *title, int x_pos, int y_pos, int width, int height, bool f
     }
     initGame();
 }
-void initGame() {
+void init_menu() {
     menubombTex = LoadTexture("resource/ast/Bomberman/Bomb.png", renderer);	
-    pause_bomb_R.x = 1620;  
-    pause_bomb_R.y = 320;
-    pause_bomb_R.w = 64; 
-    pause_bomb_R.h = 64; 
-
-    init_slime(196, 128);
-    init_slime(64, 8*64);
-
-    player_R.x = 64;
-    player_R.y = 64;
-    player_velocity = 2;
-    bomb_power = 1;
-    bomb_placed = false;
-    playerTex = LoadTexture("resource/ast/Bomberman/Bomberman_Front.png", renderer);
-    gScreenSurface = SDL_GetWindowSurface(window);
-
-    int lvl1[20][25] = {
-    {7,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,8},
-    {5,0,0,0,1,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
-    {5,0,1,0,1,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
-    {5,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
-    {5,0,2,1,1,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
-    {5,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
-    {5,1,1,1,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
-    {5,0,1,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
-    {5,0,2,2,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
-    {5,0,1,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
-    {5,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
-    {5,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
-    {5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
-    {5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
-    {5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
-    {5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
-    {5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
-    {5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
-    {5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
-    {9,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,10},
-    };
-    LoadMap(lvl1);
+    menu_bomb_R.x = 1610;  
+    menu_bomb_R.y = 310;
+    menu_bomb_R.w = 70; 
+    menu_bomb_R.h = 70; 
 
     arcade = TTF_OpenFont("resource/ttf/ARCADECLASSIC.TTF", 24);
     
@@ -98,11 +63,55 @@ void initGame() {
     t_Message_rect.x = 1600;  
     t_Message_rect.y = 600;
     t_Message_rect.w = 400; 
-    t_Message_rect.h = 100;
+    t_Message_rect.h = 100;     
 
     background_R.w = 1600;
     background_R.h = 1280;
 }
+
+void initGame() {
+
+    init_menu();
+
+    init_slime(196, 128);
+    init_slime(64, 8*64);
+    
+    exp_R.h = 64;
+    exp_R.w = 64;
+
+    player_R.x = 64;
+    player_R.y = 64;
+    player_velocity = 2;
+    bomb_power = 1;
+    bomb_placed = false;
+    playerTex = loaded_font;
+    gScreenSurface = SDL_GetWindowSurface(window);
+
+    int lvl1[20][25] = {
+    {7,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,8},
+    {5,0,0,0,1,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
+    {5,0,1,0,1,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
+    {5,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
+    {5,0,2,1,1,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
+    {5,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
+    {5,1,1,1,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
+    {5,0,1,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
+    {5,0,2,2,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
+    {5,0,1,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
+    {5,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
+    {5,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
+    {5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
+    {5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
+    {5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
+    {5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
+    {5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
+    {5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
+    {5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
+    {9,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,10},
+    };
+    LoadMap(lvl1);
+}
+
 void LoadMap(int arr[20][25]){
     for(int row = 0; row < 20; ++row)
         for(int column = 0; column < 25; ++column)
@@ -129,7 +138,11 @@ void handleEvents(){
                     SDL_RenderPresent(renderer); break;}
                                 else {
                                     mStartTicks = SDL_GetTicks() - mPausedTicks;
-                                    is_pause = false; break;}
+                                    is_pause = false; break;
+                                    }
+                case SDLK_1: init_sound(1); break;
+                case SDLK_2: init_sound(2); break;
+                case SDLK_3: lose(); break;
             }
         }
         if(event.type == SDL_KEYUP) switch( event.key.keysym.sym ) {
@@ -139,6 +152,43 @@ void handleEvents(){
             case SDLK_RIGHT: move_right = false; break;
         }
     }
+}
+
+void lose() {
+    arcade = TTF_OpenFont("resource/ttf/ARCADECLASSIC.TTF", 24);
+    printf("%s\n", "1111111");
+    Red.r = 220;
+    Red.g = 20; 
+    Red.b = 60;
+
+    GameOver = TTF_RenderText_Solid(arcade, "G a m e   O v e r", Red);
+    GameOver_Message = SDL_CreateTextureFromSurface(renderer, GameOver); 
+
+    printf("%s\n", "22222222");
+
+    GameOver_Message_rect.x = 500;  
+    GameOver_Message_rect.y = 340;
+    GameOver_Message_rect.w = 800; 
+    GameOver_Message_rect.h = 300;
+    if (!is_pause) {
+        printf("%s\n", "33333333");
+        mPausedTicks = SDL_GetTicks();
+        printf("%s\n", "444444444");
+        pauseMenu();
+        printf("%s\n", "555555555");
+        //SDL_RenderCopy(renderer, GameOver_Message, NULL, &GameOver_Message_rect);
+        //SDL_RenderPresent(renderer);
+        printf("%s\n", "6666666666");
+        is_pause = true;
+    }
+     else {
+        printf("%s\n", "777777777");
+        mStartTicks = SDL_GetTicks() - mPausedTicks;
+        is_pause = false;
+    }
+    
+    SDL_RenderCopy(renderer, GameOver_Message, NULL, &GameOver_Message_rect);
+    SDL_RenderPresent(renderer);
 }
 
 void update(){   
@@ -162,12 +212,13 @@ void render(){
     SDL_RENDERS_SLIMES();
     SDL_RenderCopy(renderer, playerTex, NULL, &player_R);
     SDL_RenderCopy(renderer, bombTex, NULL, &bomb_R);
-    SDL_RenderCopy(renderer, menubombTex, NULL, &pause_bomb_R);
+    SDL_RenderCopy(renderer, menubombTex, NULL, &menu_bomb_R);
     SDL_RenderCopy(renderer, h_Message, NULL, &h_Message_rect);
     SDL_RenderCopy(renderer, b_Message, NULL, &b_Message_rect);
     SDL_RenderCopy(renderer, s_Message, NULL, &s_Message_rect);
     SDL_RenderCopy(renderer, t_Message, NULL, &t_Message_rect);
-
+    //SDL_RenderCopy(renderer, GameOver_Message, NULL, &GameOver_Message_rect);
+    
     SDL_RenderPresent(renderer);
 }
 
