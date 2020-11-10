@@ -27,6 +27,7 @@ void playerMove(int player_velocity, int map[20][25]){
 			if(player_R.y > 1152) player_R.y = 1152;
 			player_R.y -= player_velocity;
 		}
+		else lose();
 	}
 	if (move_down && map[(player_R.y + 63)/64][(player_R.x + 8)/64] == 0 && map[(player_R.y + 63)/64][(player_R.x + 54)/64] == 0) {
 		t_slime *cur_slime = slimes;
@@ -47,6 +48,7 @@ void playerMove(int player_velocity, int map[20][25]){
 			if(player_R.y > 1152) player_R.y = 1152;
 			player_R.y += player_velocity;
 		}
+		else lose();
 	}
 	if (move_right && map[(player_R.y + 32)/64][(player_R.x + 56)/64] == 0 && map[(player_R.y + 61)/64][(player_R.x + 56)/64] == 0) {
 		t_slime *cur_slime = slimes;
@@ -67,6 +69,8 @@ void playerMove(int player_velocity, int map[20][25]){
 			if(player_R.x > 1480) player_R.x = 1480;
 			player_R.x += player_velocity;
 		}
+		else lose();
+		
 	}
 	if (move_left && map[(player_R.y + 32)/64][(player_R.x + 6)/64] == 0 && map[(player_R.y + 61)/64][(player_R.x + 6)/64] == 0){
 		t_slime *cur_slime = slimes;
@@ -87,6 +91,7 @@ void playerMove(int player_velocity, int map[20][25]){
 			if(player_R.x > 1480) player_R.x = 1480;
 			player_R.x -= player_velocity;
 		}
+		else lose();
 	}
 
 	if (move_right) {
@@ -195,7 +200,7 @@ void explosionAnimation(int bomb_power, int map[20][25]){
   		explosion_R.y = bomb_R.y;
 		SDL_RenderCopy(renderer, loaded_explosion, NULL, &explosion_R); 
   	} //left
-	SDL_RenderCopy(renderer, loaded_explosion, NULL, &explosion_R); 
+	//SDL_RenderCopy(renderer, loaded_explosion, NULL, &explosion_R); 
 	}
 }
 
