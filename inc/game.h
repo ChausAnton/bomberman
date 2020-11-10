@@ -61,6 +61,11 @@ Uint32  timer_start;
 int timer_time;
 Uint32 a;
 
+Uint32  timer_do_pause;
+SDL_Rect Time_rect;
+SDL_Surface* TimeMessage;
+SDL_Texture* Time_Message;
+
 // TXT Necessaries
 TTF_Font *arcade;
 SDL_Color White;
@@ -71,11 +76,6 @@ SDL_Rect score_num_rect;
 SDL_Surface* ScoreNumMessage;
 SDL_Texture* Score_Num_Message;
 ///////
-
-Uint32  timer_do_pause;
-SDL_Rect Time_rect;
-SDL_Surface* TimeMessage;
-SDL_Texture* Time_Message;
 
 SDL_Surface* healthMessage;
 SDL_Surface* bombMessage;

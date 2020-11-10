@@ -30,29 +30,37 @@ void init(const char *title, int x_pos, int y_pos, int width, int height, bool f
 }
 
 void init_timer() {
-    Red.r = 235;
-    Red.g = 94; 
-    Red.b = 52;
-
-    Time_rect.x = 1670;
-    Time_rect.y = 710;
-    Time_rect.w = 40;
-    Time_rect.h = 70;
 
     char buffer[10];
     timer_start = SDL_GetTicks();
     timer_time = 200 - (int)((timer_start - a)/1000);
-    if(timer_time > 9){
-        Time_rect.x = 1670;
+
+    if(timer_time == 0){
+        lose();
+    } else if(timer_time < 10) {
+        Time_rect.x = 1690;
         Time_rect.y = 705;
-        Time_rect.w = 60;
-        Time_rect.h = 75;
-    }
-    if(timer_time > 99){
+        Time_rect.w = 46;
+        Time_rect.h = 95;
+        Red.r = 220;
+        Red.g = 20; 
+        Red.b = 60;
+    } else if(timer_time < 100) {
+        Time_rect.x = 1680;
+        Time_rect.y = 703;
+        Time_rect.w = 68;
+        Time_rect.h = 97;
+        Red.r = 219;
+        Red.g = 196; 
+        Red.b = 46;
+    } else if(timer_time > 99) {
         Time_rect.x = 1670;
         Time_rect.y = 700;
-        Time_rect.w = 70;
-        Time_rect.h = 80;
+        Time_rect.w = 82;
+        Time_rect.h = 100;
+        Red.r = 50;
+        Red.g = 168; 
+        Red.b = 145;
     }
 
     TimeMessage = TTF_RenderText_Solid(arcade, SDL_itoa(timer_time, buffer, 10), Red);
@@ -75,7 +83,6 @@ void initIntro() {
     exit_R.w = 300;
     exit_R.h = 80;    
 }
-
 void menu_score(){
     
     Red.r = 50;
@@ -97,14 +104,14 @@ void menu_score(){
     ScoreNumMessage = TTF_RenderText_Solid(arcade, SDL_itoa(score_num, buffer, 10), Red);
     Score_Num_Message = SDL_CreateTextureFromSurface(renderer, ScoreNumMessage); 
 }
-
 void initMenu() {
-    is_pause = false;
-    	
+
     menu_Bomb_R.x = 1620;  
     menu_Bomb_R.y = 320;
     menu_Bomb_R.w = 64; 
     menu_Bomb_R.h = 64; 
+
+    is_pause = false;
 
     arcade = TTF_OpenFont("resource/ttf/ARCADECLASSIC.TTF", 24);
     
@@ -312,9 +319,9 @@ void lose() {
 void update(){   
     playerMove(player_velocity, map);
     slimeMove(slime_velocity);  
-    if ((bomb_placed || explosion_placed) && bombTime < 2600) bombTime = SDL_GetTicks() - (bombStart + mStartTicks);
-    if (bomb_placed && bombTime > 2000) boom(bomb_power, map);       
-    if (bombTime > 2500) {
+    if ((bomb_placed || explosion_placed) && bombTime < 3600) bombTime = SDL_GetTicks() - (bombStart + mStartTicks);
+    if (bomb_placed && bombTime > 3000) boom(bomb_power, map);       
+    if (bombTime > 3500) {
         explosion_placed = false;
         bombTime = 0;
         bomb_R.x = 0;
@@ -388,20 +395,25 @@ void clean(){
     put_bomb_sound = NULL;
     Mix_FreeChunk(step_sound);
     step_sound = NULL; 
-
+    Mix_FreeChunk(die_sound);
+    die_sound = NULL;
+    Mix_FreeChunk(explosion_sound);
+    explosion_sound = NULL;
+    
+    // Free window
     SDL_DestroyWindow(window);
     window =  NULL;    
     SDL_DestroyRenderer(renderer);
     renderer = NULL;
 
-    // Free loaded text
+    ///Free loaded text
     SDL_FreeSurface(GameOver);
     SDL_FreeSurface(healthMessage);
     SDL_FreeSurface(timeMessage);
     SDL_FreeSurface(scoreMessage);
     SDL_FreeSurface(bombMessage);
 
-    // Free Loaded textures
+    //Free Loaded textures
     SDL_DestroyTexture(loaded_front);
     SDL_DestroyTexture(loaded_bomb);
     SDL_DestroyTexture(loaded_explosion);
@@ -448,6 +460,7 @@ void restart(){
     score_num = 0;
     menu_score();
 }
+
 void pauseMenu(){
     //restart();
 }
