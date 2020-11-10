@@ -3,6 +3,7 @@
 
 void init(const char *title, int x_pos, int y_pos, int width, int height, bool fullscreen){
     int flags = 0;
+    LoseGame = 0;
     TTF_Init();
     if(fullscreen) flags = SDL_WINDOW_FULLSCREEN;
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0){
@@ -23,8 +24,9 @@ void init(const char *title, int x_pos, int y_pos, int width, int height, bool f
     }
     initGame();
 }
+
 void init_menu() {
-    menubombTex = LoadTexture("resource/ast/Bomberman/Bomb.png", renderer);	
+    
     menu_bomb_R.x = 1610;  
     menu_bomb_R.y = 310;
     menu_bomb_R.w = 70; 
@@ -42,28 +44,28 @@ void init_menu() {
     timeMessage = TTF_RenderText_Solid(arcade, " T i m e ", White);
 
     h_Message = SDL_CreateTextureFromSurface(renderer, healthMessage); 
-    h_Message_rect.x = 1600;  
+    h_Message_rect.x = 1600;
     h_Message_rect.y = 0;
-    h_Message_rect.w = 400; 
-    h_Message_rect.h = 100;  
+    h_Message_rect.w = 400;
+    h_Message_rect.h = 100;
 
     b_Message = SDL_CreateTextureFromSurface(renderer, bombMessage); 
-    b_Message_rect.x = 1600;  
+    b_Message_rect.x = 1600;
     b_Message_rect.y = 200;
-    b_Message_rect.w = 400; 
-    b_Message_rect.h = 100;   
+    b_Message_rect.w = 400;
+    b_Message_rect.h = 100;
 
     s_Message = SDL_CreateTextureFromSurface(renderer, scoreMessage); 
-    s_Message_rect.x = 1600;  
+    s_Message_rect.x = 1600;
     s_Message_rect.y = 400;
-    s_Message_rect.w = 400; 
+    s_Message_rect.w = 400;
     s_Message_rect.h = 100;
 
     t_Message = SDL_CreateTextureFromSurface(renderer, timeMessage); 
-    t_Message_rect.x = 1600;  
+    t_Message_rect.x = 1600;
     t_Message_rect.y = 600;
-    t_Message_rect.w = 400; 
-    t_Message_rect.h = 100;     
+    t_Message_rect.w = 400;
+    t_Message_rect.h = 100;
 
     background_R.w = 1600;
     background_R.h = 1280;
@@ -76,15 +78,15 @@ void initGame() {
     init_slime(196, 128);
     init_slime(64, 8*64);
     
-    exp_R.h = 64;
-    exp_R.w = 64;
+    explosion_R.h = 64;
+    explosion_R.w = 64;
 
     player_R.x = 64;
     player_R.y = 64;
     player_velocity = 2;
     bomb_power = 1;
     bomb_placed = false;
-    playerTex = loaded_font;
+    playerTex = loaded_front;
     gScreenSurface = SDL_GetWindowSurface(window);
 
     int lvl1[20][25] = {
@@ -109,6 +111,7 @@ void initGame() {
     {5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
     {9,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,10},
     };
+
     LoadMap(lvl1);
 }
 
@@ -142,7 +145,7 @@ void handleEvents(){
                                     }
                 case SDLK_1: init_sound(1); break;
                 case SDLK_2: init_sound(2); break;
-                case SDLK_3: lose(); break;
+                case SDLK_r: restart(); break;
             }
         }
         if(event.type == SDL_KEYUP) switch( event.key.keysym.sym ) {
@@ -155,8 +158,10 @@ void handleEvents(){
 }
 
 void lose() {
+    LoseGame = 1;
+    Mix_PlayChannel(-1, die_sound, 0);
     arcade = TTF_OpenFont("resource/ttf/ARCADECLASSIC.TTF", 24);
-    printf("%s\n", "1111111");
+
     Red.r = 220;
     Red.g = 20; 
     Red.b = 60;
@@ -164,31 +169,12 @@ void lose() {
     GameOver = TTF_RenderText_Solid(arcade, "G a m e   O v e r", Red);
     GameOver_Message = SDL_CreateTextureFromSurface(renderer, GameOver); 
 
-    printf("%s\n", "22222222");
-
     GameOver_Message_rect.x = 500;  
     GameOver_Message_rect.y = 340;
     GameOver_Message_rect.w = 800; 
     GameOver_Message_rect.h = 300;
-    if (!is_pause) {
-        printf("%s\n", "33333333");
-        mPausedTicks = SDL_GetTicks();
-        printf("%s\n", "444444444");
-        pauseMenu();
-        printf("%s\n", "555555555");
-        //SDL_RenderCopy(renderer, GameOver_Message, NULL, &GameOver_Message_rect);
-        //SDL_RenderPresent(renderer);
-        printf("%s\n", "6666666666");
-        is_pause = true;
-    }
-     else {
-        printf("%s\n", "777777777");
-        mStartTicks = SDL_GetTicks() - mPausedTicks;
-        is_pause = false;
-    }
-    
-    SDL_RenderCopy(renderer, GameOver_Message, NULL, &GameOver_Message_rect);
-    SDL_RenderPresent(renderer);
+    is_pause = true;
+    render();
 }
 
 void update(){   
@@ -200,9 +186,22 @@ void update(){
 
     playerMove(player_velocity, map);
     slimeMove(slime_velocity);    
-    if(bomb_placed){
-        bombTime = SDL_GetTicks() - (bombStart + mStartTicks);
-        if(bombTime > 3000) boom(bomb_power, map);        
+
+   if(bomb_placed){
+        bombAnimation();
+        bombTime = SDL_GetTicks() - bombStart;
+        if(bombTime > 3000){
+            boom(bomb_power, map);  
+        }
+    }
+    else if(bombTime > 3000) {
+        bombTime = SDL_GetTicks() - bombStart;
+        if(bombTime < 3500 && explosion_placed);
+        else {
+            bombTime = 0;
+            bomb_R.x = 0;
+		    bomb_R.y = 0;
+        }
     }
 } 
 
@@ -210,15 +209,16 @@ void render(){
     SDL_RenderClear(renderer);
     DrawMap();
     SDL_RENDERS_SLIMES();
+    explosionAnimation(bomb_power, map);
     SDL_RenderCopy(renderer, playerTex, NULL, &player_R);
     SDL_RenderCopy(renderer, bombTex, NULL, &bomb_R);
-    SDL_RenderCopy(renderer, menubombTex, NULL, &menu_bomb_R);
+    SDL_RenderCopy(renderer, loaded_menu_bomb, NULL, &menu_bomb_R);
     SDL_RenderCopy(renderer, h_Message, NULL, &h_Message_rect);
     SDL_RenderCopy(renderer, b_Message, NULL, &b_Message_rect);
     SDL_RenderCopy(renderer, s_Message, NULL, &s_Message_rect);
     SDL_RenderCopy(renderer, t_Message, NULL, &t_Message_rect);
-    //SDL_RenderCopy(renderer, GameOver_Message, NULL, &GameOver_Message_rect);
-    
+    if(LoseGame == 1)
+        SDL_RenderCopy(renderer, GameOver_Message, NULL, &GameOver_Message_rect);
     SDL_RenderPresent(renderer);
 }
 
@@ -242,6 +242,8 @@ void clean(){
 }
 
 void restart(){
+    LoseGame = 0;
+    is_pause = false;
     mx_pop_index_slime(&slimes, 0);
     mx_pop_index_slime(&slimes, 0);
     SDL_DestroyTexture(bombTex);

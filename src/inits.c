@@ -27,16 +27,18 @@ void init_sound(int a){
 
 void init_texture(){
     loaded_anim_right[0] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveRight1.png", renderer);
-    loaded_anim_right[1] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveRight2.png", renderer);
+    loaded_anim_right[1] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveRight1.png", renderer);
     loaded_anim_left[0] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveLeft1.png", renderer);
     loaded_anim_left[1] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveLeft1.png", renderer);
     loaded_anim_up[0] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveUp1.png", renderer);
     loaded_anim_up[1] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveUp1.png", renderer);
     loaded_anim_down[0] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveDown1.png", renderer);
     loaded_anim_down[1] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveDown1.png", renderer);
-    loaded_font = LoadTexture("resource/ast/Bomberman/Bomberman_Front.png", renderer);
-    loaded_bomb = LoadTexture("resource/ast/Bomberman/Bomb.png", renderer);	
-    explosion = LoadTexture("resource/ast/Bomberman/bruh.png", renderer);	
+    loaded_front = LoadTexture("resource/ast/Bomberman/Bomberman_Front.png", renderer);
+    loaded_bomb = LoadTexture("resource/ast/Bomberman/Bomb1.png", renderer);	
+    loaded_menu_bomb = LoadTexture("resource/ast/Bomberman/Bomb1.png", renderer);
+    loaded_white_bomb = LoadTexture("resource/ast/Bomberman/White_Bomb.png", renderer);
+    loaded_explosion = LoadTexture("resource/ast/Bomberman/Explosion.png", renderer);
 
 
     ground = LoadTexture("resource/ast/terrain/Ground.png", renderer);
@@ -52,6 +54,7 @@ void init_texture(){
     up_right_corner = LoadTexture("resource/ast/terrain/UpRightCorner.png", renderer);
     down_left_corner = LoadTexture("resource/ast/terrain/DownLeftCorner.png", renderer);
     down_right_corner = LoadTexture("resource/ast/terrain/DownRightCorner.png", renderer);
-
+    // Pause
     b_Tex = LoadTexture("resource/img/pause.png", renderer);
 }
+

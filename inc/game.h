@@ -21,10 +21,13 @@
 #include "../inc/key_config.h"
 //#include "enemy.h"
 
+//////Lose///////
+int LoseGame;
+
 // Textures
 SDL_Texture *playerTex;
 SDL_Texture *bombTex;
-SDL_Texture *menubombTex;
+
 
 // Surfaces
 SDL_Surface *gScreenSurface;
@@ -35,6 +38,7 @@ int player_velocity;
 
 // Bomb
 SDL_Rect bomb_R;
+SDL_Rect explosion_R;
 SDL_Rect menu_bomb_R;
 int bomb_power;
 
@@ -48,6 +52,8 @@ Mix_Chunk *die_sound;
 // Bomb timer
 Uint32 bombStart;
 int bombTime;
+Uint32 explosionStart;
+int explosionTime;
 
 // TXT Necessaries
 TTF_Font *arcade;
@@ -98,9 +104,11 @@ SDL_Texture *loaded_anim_right[2];
 SDL_Texture *loaded_anim_left[2];
 SDL_Texture *loaded_anim_up[2];
 SDL_Texture *loaded_anim_down[2];
-SDL_Texture *loaded_font;
+SDL_Texture *loaded_front;
 SDL_Texture *loaded_bomb;
-SDL_Texture *explosion;
+SDL_Texture *loaded_white_bomb;
+SDL_Texture *loaded_explosion;
+SDL_Texture *loaded_menu_bomb;
 
 SDL_Rect exp_R;
 
