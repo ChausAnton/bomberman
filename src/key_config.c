@@ -27,7 +27,6 @@ void playerMove(int player_velocity, int map[20][25]){
 			if(player_R.y > 1152) player_R.y = 1152;
 			player_R.y -= player_velocity;
 		}
-		else lose();
 	}
 	if (move_down && map[(player_R.y + 63)/64][(player_R.x + 8)/64] == 0 && map[(player_R.y + 63)/64][(player_R.x + 54)/64] == 0) {
 		t_slime *cur_slime = slimes;
@@ -48,7 +47,6 @@ void playerMove(int player_velocity, int map[20][25]){
 			if(player_R.y > 1152) player_R.y = 1152;
 			player_R.y += player_velocity;
 		}
-		else lose();
 	}
 	if (move_right && map[(player_R.y + 32)/64][(player_R.x + 56)/64] == 0 && map[(player_R.y + 61)/64][(player_R.x + 56)/64] == 0) {
 		t_slime *cur_slime = slimes;
@@ -69,8 +67,6 @@ void playerMove(int player_velocity, int map[20][25]){
 			if(player_R.x > 1480) player_R.x = 1480;
 			player_R.x += player_velocity;
 		}
-		else lose();
-		
 	}
 	if (move_left && map[(player_R.y + 32)/64][(player_R.x + 6)/64] == 0 && map[(player_R.y + 61)/64][(player_R.x + 6)/64] == 0){
 		t_slime *cur_slime = slimes;
@@ -91,7 +87,6 @@ void playerMove(int player_velocity, int map[20][25]){
 			if(player_R.x > 1480) player_R.x = 1480;
 			player_R.x -= player_velocity;
 		}
-		else lose();
 	}
 
 	if (move_right) {
@@ -159,11 +154,11 @@ void playerMove(int player_velocity, int map[20][25]){
 }
 
 void Bomb(){
+	bomb_placed = true;
 	Mix_PlayChannel(-1, put_bomb_sound, 0);
 	bombStart = SDL_GetTicks();
 	bomb_R.x = (((player_R.x + 32) / 64) * 64);
-	bomb_R.y = (((player_R.y + 32) / 64) * 64);
-	//bombTex = loaded_bomb;	
+	bomb_R.y = (((player_R.y + 32) / 64) * 64);	
 }
 
 void bombAnimation(){
@@ -175,48 +170,45 @@ void bombAnimation(){
 
 void explosionAnimation(int bomb_power, int map[20][25]){
 	if (bombTime > 3000 && bombTime < 3500){
-	if (map[(bomb_R.y) / 64][bomb_R.x / 64] == 1 || map[(bomb_R.y) / 64][bomb_R.x / 64] == 0){
-		explosion_R.x = bomb_R.x;
-  		explosion_R.y = bomb_R.y;
-		SDL_RenderCopy(renderer, loaded_explosion, NULL, &explosion_R);   
- 	 }//center
- 	if (map[(bomb_R.y / 64) - bomb_power][bomb_R.x / 64] == 1 || map[(bomb_R.y / 64) - bomb_power][bomb_R.x / 64] == 0){
-		explosion_R.x = bomb_R.x;
-  		explosion_R.y = bomb_R.y - bomb_power*64;
-		SDL_RenderCopy(renderer, loaded_explosion_up, NULL, &explosion_R); 
- 	 }//up
- 	if (map[(bomb_R.y / 64) + bomb_power][bomb_R.x / 64] == 1 || map[(bomb_R.y / 64) + bomb_power][bomb_R.x / 64] == 0 ){ 
-		explosion_R.x = bomb_R.x;
-  		explosion_R.y = bomb_R.y + bomb_power*64;
-		SDL_RenderCopy(renderer, loaded_explosion_down, NULL, &explosion_R); 
-  	}//down
- 	if (map[bomb_R.y / 64][(bomb_R.x / 64) + bomb_power] == 1 || map[bomb_R.y / 64][(bomb_R.x / 64) + bomb_power] == 0 ){
-		explosion_R.x = bomb_R.x + bomb_power*64;
-  		explosion_R.y = bomb_R.y;
-		SDL_RenderCopy(renderer, loaded_explosion_right, NULL, &explosion_R); 
-  	} //right
- 	if (map[bomb_R.y / 64][(bomb_R.x / 64) - bomb_power] == 1|| map[bomb_R.y / 64][(bomb_R.x / 64) - bomb_power] == 0){
-		explosion_R.x = bomb_R.x - bomb_power*64;
-  		explosion_R.y = bomb_R.y;
-		SDL_RenderCopy(renderer, loaded_explosion_left, NULL, &explosion_R); 
-  	} //left
-	//SDL_RenderCopy(renderer, loaded_explosion, NULL, &explosion_R); 
+		if (map[(bomb_R.y) / 64][bomb_R.x / 64] == 1 || map[(bomb_R.y) / 64][bomb_R.x / 64] == 0){
+			explosion_R.x = bomb_R.x;
+  			explosion_R.y = bomb_R.y;
+			explosionTex = loaded_explosion;
+			SDL_RenderCopy(renderer, explosionTex, NULL, &explosion_R);   
+ 		}//center
+ 		if (map[(bomb_R.y - bomb_power*64) / 64][bomb_R.x / 64] == 1 || map[(bomb_R.y - bomb_power*64) / 64][bomb_R.x / 64] == 0){
+			explosion_R.x = bomb_R.x;
+  			explosion_R.y = bomb_R.y - bomb_power*64;
+			explosionTex = loaded_explosion_up;
+			SDL_RenderCopy(renderer, explosionTex, NULL, &explosion_R); 
+ 		 }//up
+ 		if (map[(bomb_R.y + bomb_power*64) / 64][bomb_R.x / 64] == 1 || map[(bomb_R.y + bomb_power*64) / 64][bomb_R.x / 64] == 0){ 
+			explosion_R.x = bomb_R.x;
+  			explosion_R.y = bomb_R.y + bomb_power*64;
+			explosionTex = loaded_explosion_down;
+			SDL_RenderCopy(renderer, explosionTex, NULL, &explosion_R); 
+  		}//down
+ 		if (map[bomb_R.y / 64][(bomb_R.x + bomb_power*64) / 64] == 1 || map[bomb_R.y / 64][(bomb_R.x + bomb_power*64) / 64] == 0){
+			explosion_R.x = bomb_R.x + bomb_power*64;
+  			explosion_R.y = bomb_R.y;
+			explosionTex = loaded_explosion_right;
+			SDL_RenderCopy(renderer, explosionTex, NULL, &explosion_R); 
+  		} //right
+ 		if (map[bomb_R.y / 64][(bomb_R.x - bomb_power*64) / 64] == 1 || map[bomb_R.y / 64][(bomb_R.x - bomb_power*64) / 64] == 0){
+			explosion_R.x = bomb_R.x - bomb_power*64;
+  			explosion_R.y = bomb_R.y;
+			explosionTex = loaded_explosion_left;
+			SDL_RenderCopy(renderer, explosionTex, NULL, &explosion_R); 
+  		} //left
+		//SDL_RenderCopy(renderer, explosionTex, NULL, &explosion_R); 
 	}
 }
 
 void boom(int bomb_power, int map[20][25]){
-	explosion_placed = true;
-
 	if (map[(bomb_R.y - bomb_power*64) / 64][bomb_R.x / 64] == 1) map[(bomb_R.y - bomb_power*64) / 64][bomb_R.x / 64] = 0; //up
 	if (map[(bomb_R.y + bomb_power*64) / 64][bomb_R.x / 64] == 1) map[(bomb_R.y + bomb_power*64) / 64][bomb_R.x / 64] = 0; //down
-	if (map[bomb_R.y / 64][(bomb_R.x + bomb_power*64) / 64] == 1) map[bomb_R.y / 64][(bomb_R.x + bomb_power*64) / 64] = 0; //left
-	if (map[bomb_R.y / 64][(bomb_R.x - bomb_power*64) / 64] == 1) map[bomb_R.y / 64][(bomb_R.x - bomb_power*64) / 64] = 0; //right
-
-	if (bomb_R.y / 64 == (player_R.y + 32)/64 && bomb_R.x / 64 == (player_R.x + 32)/64) lose();
-	else if ((bomb_R.y - bomb_power*64)/ 64 == (player_R.y + 32)/64 && bomb_R.x / 64 == (player_R.x + 32)/64) lose();
-	else if ((bomb_R.y + bomb_power*64)/ 64 == (player_R.y + 32)/64 && bomb_R.x / 64 == (player_R.x + 32)/64) lose();
-	else if (bomb_R.y / 64 == (player_R.y + 32)/64 && (bomb_R.x + bomb_power*64) / 64 == (player_R.x + 32)/64) lose();
-	else if (bomb_R.y / 64 == (player_R.y + 32)/64 && (bomb_R.x - bomb_power*64) / 64 == (player_R.x + 32)/64) lose();
+	if (map[bomb_R.y / 64][(bomb_R.x + bomb_power*64) / 64] == 1) map[bomb_R.y / 64][(bomb_R.x + bomb_power*64) / 64] = 0; //right
+	if (map[bomb_R.y / 64][(bomb_R.x - bomb_power*64) / 64] == 1) map[bomb_R.y / 64][(bomb_R.x - bomb_power*64) / 64] = 0; //left
 
 	t_slime *cur_slime  = slimes;
 	for(int i = 0; cur_slime != NULL; ++i) {
@@ -229,6 +221,12 @@ void boom(int bomb_power, int map[20][25]){
 	}
 	Mix_PlayChannel(-1, explosion_sound, 0);
 	bomb_placed = false;
-	//bombTime = 0;
+	explosion_placed = true;
 	bombTex = NULL;
+
+	if (bomb_R.y / 64 == (player_R.y + 32)/64 && bomb_R.x / 64 == (player_R.x + 32)/64) lose();
+	else if ((bomb_R.y - bomb_power*64)/ 64 == (player_R.y + 32)/64 && bomb_R.x / 64 == (player_R.x + 32)/64) lose();
+	else if ((bomb_R.y + bomb_power*64)/ 64 == (player_R.y + 32)/64 && bomb_R.x / 64 == (player_R.x + 32)/64) lose();
+	else if (bomb_R.y / 64 == (player_R.y + 32)/64 && (bomb_R.x + bomb_power*64) / 64 == (player_R.x + 32)/64) lose();
+	else if (bomb_R.y / 64 == (player_R.y + 32)/64 && (bomb_R.x - bomb_power*64) / 64 == (player_R.x + 32)/64) lose();
 }

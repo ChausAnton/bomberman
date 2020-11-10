@@ -23,6 +23,8 @@ void init(const char *title, int x_pos, int y_pos, int width, int height, bool f
     }
     a = 0;
     initGame();
+    initMenu();
+    initMap();
 }
 
 void init_timer() {
@@ -56,10 +58,20 @@ void init_timer() {
 }
 
 void initIntro() {
-   // is_intro = false;
+    is_intro = true;
 
-    ///intro_R.w = 2000;
-    //intro_R.h = 1280;
+    intro_R.w = 2000;
+    intro_R.h = 1280;
+
+    play_R.x = 850;
+    play_R.y = 600;
+    play_R.w = 300;
+    play_R.h = 80;
+
+    exit_R.x = 850;
+    exit_R.y = 700;
+    exit_R.w = 300;
+    exit_R.h = 80;    
 }
 void initMenu() {
     is_pause = false;
@@ -109,10 +121,7 @@ void initMenu() {
 }
 
 void initGame() {
-
-    initMenu();
-    init_timer();
-    LoseGame = 0;
+    is_lose = false;
     player_R.h = 64;
     player_R.w = 64;
 
@@ -132,7 +141,9 @@ void initGame() {
     bomb_placed = false;
     playerTex = loaded_front;
     gScreenSurface = SDL_GetWindowSurface(window);
+}
 
+void initMap(){
     int lvl1[20][25] = {
     {7,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,8},
     {5,0,0,0,1,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
@@ -168,42 +179,86 @@ void handleEvents(){
     SDL_Event event;
     while(SDL_PollEvent(&event) != 0){
         if(event.type == SDL_QUIT) isRunning = false;
-        if(event.type == SDL_KEYDOWN){
+        if(event.type == SDL_MOUSEMOTION && is_intro) {
+            mouseX = event.motion.x;
+            mouseY = event.motion.y;
+            if (mouseX > 850 && mouseX < 1150 && mouseY > 600 && mouseY < 680) {
+                play_Hover = true;          
+            }
+            else play_Hover = false;
+
+            if (mouseX > 850 && mouseX < 1150 && mouseY > 700 && mouseY < 780) {
+                exit_Hover = true;          
+            }
+            else exit_Hover = false;
+        }
+        if(event.type == SDL_KEYDOWN && !is_lose && !is_intro){
             switch(event.key.keysym.sym) {
                 move_start = SDL_GetTicks();       //Frames start
                 case SDLK_UP: move_up = true; break;
                 case SDLK_DOWN: move_down = true; break;
                 case SDLK_LEFT: move_left = true; break;
                 case SDLK_RIGHT: move_right = true; break;
-                case SDLK_e: if(!bomb_placed) { Bomb(map); bomb_placed = true;} break;
-                case SDLK_ESCAPE: if (!is_pause) {
-                                        mPausedTicks = SDL_GetTicks();
-                                        pauseMenu();
-                                        is_pause = true;
-                                        SDL_RenderCopy(renderer, pauseTex, NULL, &pause_R);
-                                        SDL_RenderPresent(renderer); break;
-                                    }
-                                    else {
-                                        a += (SDL_GetTicks() - mPausedTicks);
-                                        mStartTicks = SDL_GetTicks() - mPausedTicks;
-                                        is_pause = false; break;
-                                    }
+                case SDLK_e: if(!bomb_placed) Bomb(map); break;
+                case SDLK_ESCAPE: 
+                    if (!is_pause) {
+                        mPausedTicks = SDL_GetTicks();
+                        pauseMenu();
+                        is_pause = true;
+                    }
+                    else {
+                        mStartTicks = SDL_GetTicks() - mPausedTicks;
+                        a += mStartTicks;
+                        is_pause = false; 
+                    }
+                    break;
                 case SDLK_1: init_sound(1); break;
                 case SDLK_2: init_sound(2); break;
-                case SDLK_r: restart(); break;
+                case SDLK_3: lose(); break;
+                case SDLK_4: initIntro(); break;
             }
         }
-        if(event.type == SDL_KEYUP) switch( event.key.keysym.sym ) {
+        if(event.type == SDL_KEYUP && !is_lose && !is_intro) switch( event.key.keysym.sym ) {
             case SDLK_UP: move_up = false; break;
             case SDLK_DOWN: move_down = false; break;
             case SDLK_LEFT: move_left = false; break;
             case SDLK_RIGHT: move_right = false; break;
         }
+        if(event.type == SDL_KEYDOWN && is_lose && !is_intro) switch( event.key.keysym.sym ) {
+            case SDLK_r: restart(); break;
+        }
+        if(is_intro) {
+            int mouseX = event.motion.x;
+            int mouseY = event.motion.y;
+            if (mouseX > 850 && mouseX < 1150 && mouseY > 600 && mouseY < 680) {
+                switch (event.button.button){
+                    case SDL_BUTTON_LEFT: 
+                        play_Pressed = true;
+                        render();
+                        SDL_Delay(200);
+                        render();
+                        SDL_Delay(200);
+                        restart();
+                        break;
+                }             
+            }
+            if (mouseX > 850 && mouseX < 1150 && mouseY > 700 && mouseY < 780) {
+                switch (event.button.button){
+                    case SDL_BUTTON_LEFT: 
+                        exit_Pressed = true;
+                        render();
+                        SDL_Delay(100);
+                        render();
+                        isRunning = false;
+                        break;
+                }             
+            }
+        }
     }
 }
 
 void lose() {
-    LoseGame = 1;
+    is_lose = true;
     Mix_PlayChannel(-1, die_sound, 0);
 
     Red.r = 220;
@@ -213,80 +268,103 @@ void lose() {
     GameOver = TTF_RenderText_Solid(arcade, "G a m e   O v e r", Red);
     GameOver_Message = SDL_CreateTextureFromSurface(renderer, GameOver); 
 
-    GameOver_Message_rect.x = 500;  
-    GameOver_Message_rect.y = 340;
+    GameOver_Message_rect.x = 600;  
+    GameOver_Message_rect.y = 490;
     GameOver_Message_rect.w = 800; 
     GameOver_Message_rect.h = 300;
-    is_pause = true;
-    render();
 }
 
 void update(){   
     playerMove(player_velocity, map);
-    slimeMove(slime_velocity);    
-    if(bomb_placed){
-        bombAnimation();
-        bombTime = SDL_GetTicks() - (bombStart + mStartTicks);
-        if(bombTime > 3000) boom(bomb_power, map);        
-    }
-    else if(bombTime > 3000) {
-        bombTime = SDL_GetTicks() - (bombStart + mStartTicks);
-        if(bombTime < 3500 && explosion_placed);
-        else {
-            bombTime = 0;
-            bomb_R.x = 0;
-		    bomb_R.y = 0;
-        }
-    }
+    slimeMove(slime_velocity);  
+    if ((bomb_placed || explosion_placed) && bombTime < 3600) bombTime = SDL_GetTicks() - (bombStart + mStartTicks);
+    if (bomb_placed && bombTime > 3000) boom(bomb_power, map);       
+    if (bombTime > 3500) {
+        explosion_placed = false;
+        bombTime = 0;
+        bomb_R.x = 0;
+        bomb_R.y = 0;
+    }   
 } 
 
 void render(){
-    /*if(is_intro){
+    if(is_intro){
+        SDL_RenderClear(renderer);
+        SDL_RenderCopy(renderer, introTex, NULL, &intro_R);
 
+        if (play_Hover) playTex = loaded_playTexHover;
+        else playTex = loaded_playTex;
+        if (play_Pressed) { play_Pressed = false; playTex = loaded_playTexPressed; }
+        SDL_RenderCopy(renderer, playTex, NULL, &play_R);
+
+        if (exit_Hover) exitTex = loaded_exitTexHover;
+        else exitTex = loaded_exitTex;
+        if (exit_Pressed) { exit_Pressed = false; exitTex = loaded_exitTexPressed; }
+        SDL_RenderCopy(renderer, exitTex, NULL, &exit_R);
+
+        SDL_RenderPresent(renderer);
     }
-    else  if(is_intro){
-        
-    }*/
-    SDL_RenderClear(renderer);
-    DrawMap();
-    SDL_RENDERS_SLIMES();
-    explosionAnimation(bomb_power, map);
-    SDL_RenderCopy(renderer, playerTex, NULL, &player_R);
-    SDL_RenderCopy(renderer, bombTex, NULL, &bomb_R);
-    SDL_RenderCopy(renderer, loaded_menu_bomb, NULL, &menu_Bomb_R);
-    SDL_RenderCopy(renderer, h_Message, NULL, &h_Message_rect);
-    SDL_RenderCopy(renderer, b_Message, NULL, &b_Message_rect);
-    SDL_RenderCopy(renderer, s_Message, NULL, &s_Message_rect);
-    SDL_RenderCopy(renderer, t_Message, NULL, &t_Message_rect);
-    SDL_RenderCopy(renderer, Time_Message, NULL, &Time_rect);
-    if(LoseGame == 1)
+    else if(is_pause){
+        SDL_RenderClear(renderer);
+        DrawMap();
+        SDL_RENDERS_SLIMES();
+        explosionAnimation(bomb_power, map);
+        SDL_RenderCopy(renderer, playerTex, NULL, &player_R);
+        SDL_RenderCopy(renderer, bombTex, NULL, &bomb_R);
+        SDL_RenderCopy(renderer, pauseTex, NULL, &pause_R);
+        SDL_RenderCopy(renderer, loaded_menu_bomb, NULL, &menu_Bomb_R);
+        SDL_RenderCopy(renderer, h_Message, NULL, &h_Message_rect);
+        SDL_RenderCopy(renderer, b_Message, NULL, &b_Message_rect);
+        SDL_RenderCopy(renderer, s_Message, NULL, &s_Message_rect);
+        SDL_RenderCopy(renderer, t_Message, NULL, &t_Message_rect);
+        SDL_RenderCopy(renderer, Time_Message, NULL, &Time_rect);
+        SDL_RenderPresent(renderer);
+    }
+    else if (is_lose) {
+        SDL_RenderClear(renderer);
         SDL_RenderCopy(renderer, GameOver_Message, NULL, &GameOver_Message_rect);
-    SDL_RenderPresent(renderer);
+        SDL_RenderPresent(renderer);
+    }
+    else {
+        SDL_RenderClear(renderer);
+        DrawMap();
+        SDL_RENDERS_SLIMES();
+        if(bomb_placed) bombAnimation();
+        if(explosion_placed) explosionAnimation(bomb_power, map);
+        SDL_RenderCopy(renderer, playerTex, NULL, &player_R);
+        SDL_RenderCopy(renderer, bombTex, NULL, &bomb_R);
+        SDL_RenderCopy(renderer, loaded_menu_bomb, NULL, &menu_Bomb_R);
+        SDL_RenderCopy(renderer, h_Message, NULL, &h_Message_rect);
+        SDL_RenderCopy(renderer, b_Message, NULL, &b_Message_rect);
+        SDL_RenderCopy(renderer, s_Message, NULL, &s_Message_rect);
+        SDL_RenderCopy(renderer, t_Message, NULL, &t_Message_rect);
+        SDL_RenderCopy(renderer, Time_Message, NULL, &Time_rect);
+        SDL_RenderPresent(renderer);
+    }
 }
 
 void clean(){   
-     // Free loaded sounds
+    // Free loaded sounds
     Mix_FreeMusic(backgroundSound);
     backgroundSound = NULL;
     Mix_FreeChunk(put_bomb_sound);
     put_bomb_sound = NULL;
     Mix_FreeChunk(step_sound);
     step_sound = NULL; 
-    
-    // Free window
+
     SDL_DestroyWindow(window);
     window =  NULL;    
     SDL_DestroyRenderer(renderer);
     renderer = NULL;
 
-    ///Free loaded text
+    // Free loaded text
     SDL_FreeSurface(GameOver);
     SDL_FreeSurface(healthMessage);
     SDL_FreeSurface(timeMessage);
     SDL_FreeSurface(scoreMessage);
     SDL_FreeSurface(bombMessage);
 
-    //Free Loaded textures
+    // Free Loaded textures
     SDL_DestroyTexture(loaded_front);
     SDL_DestroyTexture(loaded_bomb);
     SDL_DestroyTexture(loaded_explosion);
@@ -302,23 +380,30 @@ void clean(){
 
     Mix_Quit();
     IMG_Quit();
-    SDL_Quit();
     TTF_Quit();
+    SDL_Quit();
+    
     printf("Game cleaned.\n\n");
 }
 
 void restart(){
-    a =  SDL_GetTicks();
-    //timer_start = SDL_GetTicks() - a;
-    timer_time = 0;
-    LoseGame = 0;
+    is_lose = false;
     is_pause = false;
-	while(slimes != NULL) {
+    is_intro = false;
+    move_up = false;
+    move_down = false;
+    move_left = false;
+    move_right = false;
+    bombTime = 0;
+    while(slimes != NULL) {
 		mx_pop_index_slime(&slimes, 0);
     }
-    SDL_DestroyTexture(bombTex);
-    bombTex = NULL;
-    SDL_RenderClear(renderer);
+    if(bomb_placed) bombTex = NULL;
+    if(explosion_placed) explosionTex = NULL;
+
+    a = SDL_GetTicks();
+    initMenu();
+    initMap();
     initGame();
 }
 void pauseMenu(){

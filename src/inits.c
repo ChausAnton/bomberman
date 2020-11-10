@@ -35,6 +35,7 @@ void init_texture(){
     loaded_anim_down[0] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveDown1.png", renderer);
     loaded_anim_down[1] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveDown1.png", renderer);
     loaded_front = LoadTexture("resource/ast/Bomberman/Bomberman_Front.png", renderer);
+    loaded_dead_bomberman = LoadTexture("resource/ast/Bomberman/Bomberman_Dead.png", renderer);
     loaded_bomb = LoadTexture("resource/ast/Bomberman/Bomb1.png", renderer);	
     loaded_menu_bomb = LoadTexture("resource/ast/Bomberman/Bomb1.png", renderer);
     loaded_white_bomb = LoadTexture("resource/ast/Bomberman/White_Bomb.png", renderer);
@@ -58,7 +59,15 @@ void init_texture(){
     down_left_corner = LoadTexture("resource/ast/terrain/DownLeftCorner.png", renderer);
     down_right_corner = LoadTexture("resource/ast/terrain/DownRightCorner.png", renderer);
 
-    pauseTex = LoadTexture("resource/img/pause.png", renderer);
+    pauseTex = LoadTexture("resource/ast/ui/Pause.png", renderer);
 
-   // introTex = LoadTexture("resource/img/van.png", renderer);
+    loaded_playTex = LoadTexture("resource/ast/ui/Play_Button.png", renderer);
+    loaded_playTexHover = LoadTexture("resource/ast/ui/Play_Button_MouseOn.png", renderer);
+    loaded_playTexPressed = LoadTexture("resource/ast/ui/Play_Button_Click.png", renderer);
+
+    loaded_exitTex = LoadTexture("resource/ast/ui/Exit_Button.png", renderer);
+    loaded_exitTexHover = LoadTexture("resource/ast/ui/Exit_Button_MouseOn.png", renderer);
+    loaded_exitTexPressed = LoadTexture("resource/ast/ui/Exit_Button_Click.png", renderer);
+
+    introTex = LoadTexture("resource/img/van.png", renderer);
 }
