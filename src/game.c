@@ -9,18 +9,14 @@ void init(const char *title, int x_pos, int y_pos, int width, int height, bool f
     is_win = false;
     if(fullscreen) flags = SDL_WINDOW_FULLSCREEN;
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0){
-        printf("\nTerminal Handler initialized.\n\n");
-        printf("Subsystems initialized.\n");
         // Music
         Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
         init_sound(1);
         // Window
         window = SDL_CreateWindow(title, x_pos, y_pos, width, height, flags);
-        if(window) printf("Window created.\n");
         renderer = SDL_CreateRenderer(window, -1, 0);
         if(renderer){
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-            printf("Renderer created.\n");
         }
         isRunning = true;
     }
@@ -202,6 +198,10 @@ void initGame() {
 
     bomb_R.h = 64;
     bomb_R.w = 64;
+
+    player_R.x = 64;
+    player_R.y = 64;
+
     if(level_num == 1) {
         init_slime(3*64, 2*64);
         init_slime(1*64, 8*64);
@@ -237,7 +237,7 @@ void initGame() {
         init_slime(7*64, 2*64);
         init_slime(7*64, 11*64);
         init_slime(12*64, 3*64);
-        init_slime(8*64, 7*64);
+        init_slime(9*64, 7*64);
         init_slime(11*64, 9*64);
         init_slime(13*64, 10*64);
         init_slime(10*64, 14*64);
@@ -251,13 +251,14 @@ void initGame() {
         init_slime(17*64, (19 - 4)*64);
         init_slime(1*64, 7*64);
         init_slime(24*64, 8*64);
+        player_R.x = 5 * 64;
+        player_R.y = 18 * 64;
     }
 
     explosion_R.h = 64;
     explosion_R.w = 64;
 
-    player_R.x = 64;
-    player_R.y = 64;
+    
     player_velocity = 2;
     bomb_power = 1;
     bomb_placed = false;
@@ -270,7 +271,7 @@ void initMap(){
     {7,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,8},
     {5,0,1,0,1,1,2,0,1,0,2,0,0,1,0,1,0,0,1,0,0,0,0,0,6},
     {5,0,1,0,1,1,2,0,0,1,0,0,0,2,1,0,2,0,2,2,1,2,1,0,6},
-    {5,11,1,0,0,0,0,2,2,1,0,1,0,2,0,0,2,0,1,0,0,0,2,0,6},
+    {5,0,1,0,0,0,0,2,2,1,0,1,0,2,0,0,2,0,1,0,0,0,2,0,6},
     {5,0,2,1,1,0,2,2,0,0,2,2,1,1,0,0,0,2,2,1,0,0,1,1,6},
     {5,1,1,0,0,0,0,0,1,0,0,0,1,2,2,0,0,0,1,0,2,1,2,2,6},
     {5,1,2,1,0,2,0,1,2,2,0,1,0,0,0,2,1,2,2,0,0,0,0,0,6},
@@ -291,7 +292,7 @@ void initMap(){
     int lvl2[20][25] = {
     {7,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,8},
     {5,0,2,1,0,2,2,1,1,0,0,0,1,1,0,1,0,0,0,2,0,2,0,0,6},
-    {5,0,11,1,1,1,0,0,0,1,0,0,0,2,1,0,2,0,2,2,1,2,1,0,6},
+    {5,0,1,1,1,1,0,0,0,1,0,0,0,2,1,0,2,0,2,2,1,2,1,0,6},
     {5,2,2,2,0,0,0,1,2,1,0,1,0,2,0,0,2,0,1,0,0,0,2,0,6},
     {5,1,2,1,2,0,1,2,0,0,2,2,1,1,0,0,0,2,2,1,0,0,1,1,6},
     {5,1,1,0,1,0,0,0,1,0,0,0,1,2,2,0,0,0,1,0,2,1,2,2,6},
@@ -314,7 +315,7 @@ void initMap(){
     {7,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,8},
     {5,0,2,0,2,1,2,0,2,0,2,0,2,1,2,1,2,1,2,1,2,1,11,1,6},
     {5,0,1,0,1,1,1,0,0,1,0,0,0,1,1,1,1,0,0,1,1,1,1,1,6},
-    {5,11,2,0,2,0,2,1,2,1,2,1,2,1,2,0,2,0,2,0,2,0,2,0,6},
+    {5,1,2,0,2,0,2,1,2,1,2,1,2,1,2,0,2,0,2,0,2,0,2,0,6},
     {5,0,1,1,1,0,0,1,0,0,0,1,1,1,0,0,0,1,1,1,0,0,1,1,6},
     {5,1,2,0,2,1,2,0,2,0,2,0,2,1,2,0,2,0,2,0,2,1,2,1,6},
     {5,1,0,1,0,1,0,1,0,0,1,1,1,1,0,1,1,1,1,0,0,0,0,0,6},
@@ -639,7 +640,7 @@ void clean(){
     SDL_DestroyTexture(t_Message);
     SDL_DestroyTexture(b_Message);
     SDL_DestroyTexture(s_Message);
-    SDL_DestroyTexture(playerTex);
+    if(!is_intro) SDL_DestroyTexture(playerTex);
 
     SDL_DestroyRenderer(renderer);
     renderer = NULL;
@@ -651,8 +652,6 @@ void clean(){
     IMG_Quit();
     TTF_Quit();
     SDL_Quit();
-    
-    printf("Game cleaned.\n\n");
 }
 
 void reset() {
