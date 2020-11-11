@@ -27,13 +27,18 @@ void init_sound(int a){
 
 void init_texture(){
     loaded_anim_right[0] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveRight1.png", renderer);
-    loaded_anim_right[1] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveRight1.png", renderer);
+    loaded_anim_right[1] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveRight2.png", renderer);
+    loaded_anim_right[2] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveRight3.png", renderer);
     loaded_anim_left[0] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveLeft1.png", renderer);
-    loaded_anim_left[1] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveLeft1.png", renderer);
+    loaded_anim_left[1] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveLeft2.png", renderer);
+    loaded_anim_left[2] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveLeft3.png", renderer);
     loaded_anim_up[0] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveUp1.png", renderer);
-    loaded_anim_up[1] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveUp1.png", renderer);
+    loaded_anim_up[1] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveUp2.png", renderer);
+    loaded_anim_up[2] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveUp3.png", renderer);
     loaded_anim_down[0] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveDown1.png", renderer);
-    loaded_anim_down[1] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveDown1.png", renderer);
+    loaded_anim_down[1] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveDown2.png", renderer);
+    loaded_anim_down[2] = LoadTexture("/resource/ast/Bomberman/Bomberman_MoveDown3.png", renderer);
+
     loaded_front = LoadTexture("resource/ast/Bomberman/Bomberman_Front.png", renderer);
     loaded_dead_bomberman = LoadTexture("resource/ast/Bomberman/Bomberman_Dead.png", renderer);
     loaded_bomb = LoadTexture("resource/ast/Bomberman/Bomb1.png", renderer);	
@@ -73,6 +78,12 @@ void init_texture(){
     loaded_exitTexHover = LoadTexture("resource/ast/ui/Exit_Button_MouseOn.png", renderer);
     loaded_exitTexPressed = LoadTexture("resource/ast/ui/Exit_Button_Click.png", renderer);
 
-   introTex = LoadTexture("resource/ast/ui/sss1 (2).png", renderer);
+    introTex = LoadTexture("resource/ast/ui/sss1 (2).png", renderer);
     loaded_back_menu = LoadTexture("/resource/ast/ui/RMT0Kk (1).png", renderer); 
+
+    //Bonuses
+    loaded_bonus_hp = LoadTexture("resource/ast/PowerUps/PowerUp_Heart.png", renderer);
+    loaded_bonus_time = LoadTexture("resource/ast/PowerUps/PowerUp_Time.png", renderer);
+    loaded_bonus_score = LoadTexture("resource/ast/PowerUps/PowerUp_Score.png", renderer);
+
 }

@@ -42,6 +42,15 @@ SDL_Rect menu_Heart3_R;
 int player_velocity;
 int player_hp;
 
+// Bonuses
+int bonusTime;
+SDL_Rect Bonuse_rect;
+SDL_Texture* loaded_bonus_time;
+SDL_Texture* loaded_bonus_hp;
+SDL_Texture* loaded_bonus_score;
+SDL_Texture* loaded_bonus;
+int bonus_start;
+
 // Bomb
 SDL_Rect bomb_R;
 SDL_Rect menu_Bomb_R;
@@ -154,10 +163,10 @@ int level_num;
 
 //Loaded texture
 SDL_Texture *LoadTexture(const char *, SDL_Renderer *);
-SDL_Texture *loaded_anim_right[2];
-SDL_Texture *loaded_anim_left[2];
-SDL_Texture *loaded_anim_up[2];
-SDL_Texture *loaded_anim_down[2];
+SDL_Texture *loaded_anim_right[3];
+SDL_Texture *loaded_anim_left[3];
+SDL_Texture *loaded_anim_up[3];
+SDL_Texture *loaded_anim_down[3];
 SDL_Texture *loaded_dead_bomberman;
 SDL_Texture *loaded_front;
 SDL_Texture *loaded_bomb;
@@ -190,4 +199,6 @@ void reset();
 void init_timer();
 void menu_score();
 void advertising();
+
+void addBonus();
 #endif

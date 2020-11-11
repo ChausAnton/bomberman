@@ -1,10 +1,11 @@
 #include "../inc/game.h"
 #include "../inc/enemy.h"
- 
+
 void init(const char *title, int x_pos, int y_pos, int width, int height, bool fullscreen){
     int flags = 0;
     score_num = 0;
     TTF_Init();
+    loaded_bonus = NULL;
     if(fullscreen) flags = SDL_WINDOW_FULLSCREEN;
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0){
         printf("\nTerminal Handler initialized.\n\n");
@@ -24,6 +25,7 @@ void init(const char *title, int x_pos, int y_pos, int width, int height, bool f
     }
     level_num = 1;
     player_hp = 3;
+    bonusTime = 0;
     a = 0;
     initGame();
     initMenu();
@@ -129,10 +131,11 @@ void initMenu() {
     back_menu_rect.w = 400; 
     back_menu_rect.h = 1280; 	
 
-    menu_Bomb_R.x = 1620;  
-    menu_Bomb_R.y = 320;
-    menu_Bomb_R.w = 64; 
-    menu_Bomb_R.h = 64; 
+    Bonuse_rect.x = 1762;
+    Bonuse_rect.y = 320;
+    Bonuse_rect.w = 64; 
+    Bonuse_rect.h = 64;
+
 
     menu_Heart1_R.x = 1625;  
     menu_Heart1_R.y = 115;
@@ -156,7 +159,7 @@ void initMenu() {
     White.b = 255;
 
     healthMessage = TTF_RenderText_Solid(arcade, " H e a lth ", White);
-    bombMessage = TTF_RenderText_Solid(arcade, " B o m b s ", White);
+    bombMessage = TTF_RenderText_Solid(arcade, " B o n u s", White);
     scoreMessage = TTF_RenderText_Solid(arcade, " S c o r e ", White); 
     timeMessage = TTF_RenderText_Solid(arcade, " Ti m e ", White);
 
@@ -330,7 +333,6 @@ void handleEvents(){
                 case SDLK_ESCAPE: 
                     if (!is_pause) {
                         mPausedTicks = SDL_GetTicks();
-                        pauseMenu();
                         is_pause = true;
                     }
                     else {
@@ -401,7 +403,29 @@ void lose() {
     GameOver_Message_rect.h = 300;
 }
 
-void update(){   
+void addBonus() {
+    if (bonus == 1) {
+        bonus_start = timer_time;
+        loaded_bonus = loaded_bonus_hp;
+        if (player_hp < 3) player_hp++;
+        render();
+    }
+	else if (bonus == 2) {
+        bonus_start = timer_time;
+        loaded_bonus = loaded_bonus_time;
+        bonusTime += 10;
+    }
+	else if (bonus == 3) {
+        bonus_start = timer_time;
+        loaded_bonus = loaded_bonus_score;
+        score_num += 250;
+        menu_score();
+    }
+}
+
+void update(){
+    if((bonus_start - timer_time) >= 2)
+        loaded_bonus = NULL;
     playerMove(player_velocity, map);
     slimeMove(slime_velocity);  
     if ((bomb_placed || explosion_placed) && bombTime < 2600) bombTime = SDL_GetTicks() - (bombStart + mStartTicks);
@@ -445,9 +469,9 @@ void render(){
         SDL_RenderCopy(renderer, bombTex, NULL, &bomb_R);
         SDL_RenderCopy(renderer, pauseTex, NULL, &pause_R);
         SDL_RenderCopy(renderer, loaded_back_menu, NULL, &back_menu_rect);
-        if (player_hp == 1) SDL_RenderCopy(renderer, loaded_menu_heart, NULL, &menu_Heart1_R);
-        if (player_hp == 2) SDL_RenderCopy(renderer, loaded_menu_heart, NULL, &menu_Heart2_R);
-        if (player_hp == 3) SDL_RenderCopy(renderer, loaded_menu_heart, NULL, &menu_Heart3_R);
+        if (player_hp >= 1) SDL_RenderCopy(renderer, loaded_menu_heart, NULL, &menu_Heart1_R);
+        if (player_hp >= 2) SDL_RenderCopy(renderer, loaded_menu_heart, NULL, &menu_Heart2_R);
+        if (player_hp >= 3) SDL_RenderCopy(renderer, loaded_menu_heart, NULL, &menu_Heart3_R);
         SDL_RenderCopy(renderer, loaded_menu_bomb, NULL, &menu_Bomb_R);
         SDL_RenderCopy(renderer, h_Message, NULL, &h_Message_rect);
         SDL_RenderCopy(renderer, b_Message, NULL, &b_Message_rect);
@@ -456,6 +480,7 @@ void render(){
         SDL_RenderCopy(renderer, Time_Message, NULL, &Time_rect);
         SDL_RenderCopy(renderer, Score_Num_Message, NULL, &score_num_rect);
         SDL_RenderCopy(renderer, loaded_adv, NULL, &adv_rect);
+        SDL_RenderCopy(renderer, loaded_bonus, NULL, &Bonuse_rect);//////////////
         SDL_RenderPresent(renderer);
     }
     else if (is_lose) {
@@ -483,6 +508,7 @@ void render(){
         SDL_RenderCopy(renderer, Time_Message, NULL, &Time_rect);
         SDL_RenderCopy(renderer, Score_Num_Message, NULL, &score_num_rect);
         SDL_RenderCopy(renderer, loaded_adv, NULL, &adv_rect);
+        SDL_RenderCopy(renderer, loaded_bonus, NULL, &Bonuse_rect);//////////////
         SDL_RenderPresent(renderer);
     }
 }
@@ -531,6 +557,7 @@ void clean(){
 }
 
 void reset() {
+    loaded_bonus = NULL;
     is_lose = false;
     is_pause = false;
     is_intro = false;
@@ -553,6 +580,8 @@ void reset() {
 }
 
 void restart(){
+    loaded_bonus = NULL;
+    bonusTime = 0;
     level_num = 1;
     is_lose = false;
     is_pause = false;
@@ -578,8 +607,5 @@ void restart(){
     init_sound(1);
     score_num = 0;
     menu_score();
-}
-void pauseMenu(){
-    //restart();
 }
 

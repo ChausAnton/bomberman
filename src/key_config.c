@@ -5,6 +5,7 @@
 int bomb_index_animation = 0;
 int loaded_explosion_index_animation = 0;
 int index_animation = 0;
+int anim_index_animation = 0;
 
 void playerMove(int player_velocity, int map[20][25]){
 	int move_time; // For sound_move
@@ -97,12 +98,13 @@ void playerMove(int player_velocity, int map[20][25]){
 			move_start = SDL_GetTicks();
 		}
 		///////////AnimationMove////////////////
-		if (index_animation < 6)
-			playerTex = loaded_anim_right[0];
-		else
-			playerTex = loaded_anim_right[1];
-		index_animation++;
-		if (index_animation > 12) index_animation = 0;
+		if(anim_index_animation < 10) playerTex = loaded_anim_right[0];	
+		else if(anim_index_animation > 10 && anim_index_animation < 20) playerTex = loaded_anim_right[1];
+		else if(anim_index_animation > 20 && anim_index_animation < 30)playerTex = loaded_anim_right[0];
+		else if(anim_index_animation > 30 && anim_index_animation < 40)playerTex = loaded_anim_right[2];
+		else playerTex = loaded_anim_right[0];
+		if(anim_index_animation > 50) anim_index_animation = 0;	
+		anim_index_animation++;	
 	}
 	else if (move_left){
 		/////////////SoundMove////////////////
@@ -112,12 +114,13 @@ void playerMove(int player_velocity, int map[20][25]){
 			move_start = SDL_GetTicks();
 		}
 		///////////AnimationMove////////////////
-		if (index_animation < 6)
-			playerTex = loaded_anim_left[0];
-		else
-			playerTex = loaded_anim_left[1];
-		index_animation++;
-		if (index_animation > 12) index_animation = 0;
+		if(anim_index_animation < 10) playerTex = loaded_anim_left[0];	
+		else if(anim_index_animation > 10 && anim_index_animation < 20) playerTex = loaded_anim_left[1];
+		else if(anim_index_animation > 20 && anim_index_animation < 30)playerTex = loaded_anim_left[0];
+		else if(anim_index_animation > 30 && anim_index_animation < 40)playerTex = loaded_anim_left[2];
+		else playerTex = loaded_anim_left[0];
+		if(anim_index_animation > 50) anim_index_animation = 0;	
+		anim_index_animation++;	
 	}
 	else if (move_up) {
 		/////////////SoundMove////////////////
@@ -127,12 +130,13 @@ void playerMove(int player_velocity, int map[20][25]){
 			move_start = SDL_GetTicks();
 		}
 		///////////AnimationMove////////////////
-		if (index_animation < 6)
-			playerTex = loaded_anim_up[0];
-		else
-			playerTex = loaded_anim_up[1];
-		index_animation++;
-		if (index_animation > 12) index_animation = 0;
+		if(anim_index_animation < 10) playerTex = loaded_anim_up[0];	
+		else if(anim_index_animation > 10 && anim_index_animation < 20) playerTex = loaded_anim_up[1];
+		else if(anim_index_animation > 20 && anim_index_animation < 30)playerTex = loaded_anim_up[0];
+		else if(anim_index_animation > 30 && anim_index_animation < 40)playerTex = loaded_anim_up[2];
+		else playerTex = loaded_anim_up[0];
+		if(anim_index_animation > 50) anim_index_animation = 0;	
+		anim_index_animation++;	
 	}
 	else if (move_down) {
 		/////////////SoundMove////////////////
@@ -142,15 +146,16 @@ void playerMove(int player_velocity, int map[20][25]){
 			move_start = SDL_GetTicks();
 		}
 		///////////AnimationMove////////////////
-		if (index_animation < 6)
-			playerTex = loaded_anim_down[0];
-		else
-			playerTex = loaded_anim_down[1];
-		index_animation++;
-		if (index_animation > 12) index_animation = 0;
-	}
+		if(anim_index_animation < 10) playerTex = loaded_anim_down[0];	
+		else if(anim_index_animation > 10 && anim_index_animation < 20) playerTex = loaded_anim_down[1];
+		else if(anim_index_animation > 20 && anim_index_animation < 30)playerTex = loaded_anim_down[0];
+		else if(anim_index_animation > 30 && anim_index_animation < 40)playerTex = loaded_anim_down[2];
+		else playerTex = loaded_anim_down[0];
+		if(anim_index_animation > 50) anim_index_animation = 0;	
+		anim_index_animation++;		
+		}
 	else 
-		playerTex = loaded_anim_down[0];	
+		playerTex = loaded_anim_down[0];
 }
 
 void Bomb(){
@@ -204,11 +209,35 @@ void explosionAnimation(int bomb_power, int map[20][25]){
 	}
 }
 
+int dorandom() {
+	int v = rand() % 100 + 1;
+	if (v > 0 && v <= 6) return 1;
+	else if (v > 6 && v <= 25) return 2;
+	else if (v > 25 && v <= 40) return 3;
+	else return 4;
+}
+
 void boom(int bomb_power, int map[20][25]){
-	if (map[(bomb_R.y - bomb_power*64) / 64][bomb_R.x / 64] == 1) map[(bomb_R.y - bomb_power*64) / 64][bomb_R.x / 64] = 0; //up
-	if (map[(bomb_R.y + bomb_power*64) / 64][bomb_R.x / 64] == 1) map[(bomb_R.y + bomb_power*64) / 64][bomb_R.x / 64] = 0; //down
-	if (map[bomb_R.y / 64][(bomb_R.x + bomb_power*64) / 64] == 1) map[bomb_R.y / 64][(bomb_R.x + bomb_power*64) / 64] = 0; //right
-	if (map[bomb_R.y / 64][(bomb_R.x - bomb_power*64) / 64] == 1) map[bomb_R.y / 64][(bomb_R.x - bomb_power*64) / 64] = 0; //left
+	if (map[(bomb_R.y - bomb_power*64) / 64][bomb_R.x / 64] == 1) {//up
+		bonus = dorandom();
+		map[(bomb_R.y - bomb_power*64) / 64][bomb_R.x / 64] = 0;
+		addBonus();
+	}
+	if (map[(bomb_R.y + bomb_power*64) / 64][bomb_R.x / 64] == 1) {//down
+		bonus = dorandom();	
+		map[(bomb_R.y + bomb_power*64) / 64][bomb_R.x / 64] = 0;
+		addBonus();
+	} 
+	if (map[bomb_R.y / 64][(bomb_R.x + bomb_power*64) / 64] == 1) {//right
+		bonus = dorandom();
+		map[bomb_R.y / 64][(bomb_R.x + bomb_power*64) / 64] = 0;
+		addBonus();
+	} 
+	if (map[bomb_R.y / 64][(bomb_R.x - bomb_power*64) / 64] == 1) {//left
+		bonus = dorandom();	
+		map[bomb_R.y / 64][(bomb_R.x - bomb_power*64) / 64] = 0;
+		addBonus();
+	}
 
 	t_slime *cur_slime  = slimes;
 	for(int i = 0; cur_slime != NULL; ++i) {
