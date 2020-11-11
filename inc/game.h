@@ -78,6 +78,9 @@ Uint32 a;
 TTF_Font *arcade;
 SDL_Color White;
 
+//door 
+SDL_Texture* loaded_door;
+
 // Score
 int score_num;
 SDL_Rect score_num_rect;
@@ -199,6 +202,6 @@ void reset();
 void init_timer();
 void menu_score();
 void advertising();
-
+void new_lvl();
 void addBonus();
 #endif

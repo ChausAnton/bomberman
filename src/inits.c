@@ -86,4 +86,7 @@ void init_texture(){
     loaded_bonus_time = LoadTexture("resource/ast/PowerUps/PowerUp_Time.png", renderer);
     loaded_bonus_score = LoadTexture("resource/ast/PowerUps/PowerUp_Score.png", renderer);
 
+    //door
+    loaded_door = LoadTexture("resource/ast/terrain/Door.png", renderer);
+
 }

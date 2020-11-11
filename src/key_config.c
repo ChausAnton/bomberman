@@ -29,6 +29,9 @@ void playerMove(int player_velocity, int map[20][25]){
 			player_R.y -= player_velocity;
 		}
 	}
+	if(map[(player_R.y + 30)/64][(player_R.x + 8)/64] == 11 && map[(player_R.y + 30)/64][(player_R.x + 54)/64] == 11) {
+		new_lvl();
+	}
 	if (move_down && map[(player_R.y + 63)/64][(player_R.x + 8)/64] == 0 && map[(player_R.y + 63)/64][(player_R.x + 54)/64] == 0) {
 		t_slime *cur_slime = slimes;
 	 	bool crossing = false;
@@ -48,6 +51,10 @@ void playerMove(int player_velocity, int map[20][25]){
 			if(player_R.y > 1152) player_R.y = 1152;
 			player_R.y += player_velocity;
 		}
+		
+	}
+	if(map[(player_R.y + 63)/64][(player_R.x + 8)/64] == 11 && map[(player_R.y + 63)/64][(player_R.x + 54)/64] == 11){
+		new_lvl();
 	}
 	if (move_right && map[(player_R.y + 32)/64][(player_R.x + 56)/64] == 0 && map[(player_R.y + 61)/64][(player_R.x + 56)/64] == 0) {
 		t_slime *cur_slime = slimes;
@@ -68,6 +75,10 @@ void playerMove(int player_velocity, int map[20][25]){
 			if(player_R.x > 1480) player_R.x = 1480;
 			player_R.x += player_velocity;
 		}
+		
+	}
+	if(map[(player_R.y + 32)/64][(player_R.x + 56)/64] == 11 && map[(player_R.y + 61)/64][(player_R.x + 56)/64] == 11){
+		new_lvl();
 	}
 	if (move_left && map[(player_R.y + 32)/64][(player_R.x + 6)/64] == 0 && map[(player_R.y + 61)/64][(player_R.x + 6)/64] == 0){
 		t_slime *cur_slime = slimes;
@@ -88,6 +99,9 @@ void playerMove(int player_velocity, int map[20][25]){
 			if(player_R.x > 1480) player_R.x = 1480;
 			player_R.x -= player_velocity;
 		}
+	}
+	if(map[(player_R.y + 32)/64][(player_R.x + 6)/64] == 11 && map[(player_R.y + 61)/64][(player_R.x + 6)/64] == 11) {
+		new_lvl();
 	}
 
 	if (move_right) {
@@ -159,6 +173,7 @@ void playerMove(int player_velocity, int map[20][25]){
 }
 
 void Bomb(){
+	mStartTicks = 0;
 	bomb_placed = true;
 	Mix_PlayChannel(-1, put_bomb_sound, 0);
 	bombStart = SDL_GetTicks();
