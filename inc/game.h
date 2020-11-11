@@ -21,6 +21,8 @@
 #include "../inc/key_config.h"
 //#include "enemy.h"
 
+
+
 // Mouse
 int mouseX;
 int mouseY;
@@ -56,12 +58,19 @@ SDL_Rect bomb_R;
 SDL_Rect menu_Bomb_R;
 int bomb_power;
 
+// Win
+bool is_win;
+SDL_Rect Win_rect;
+SDL_Texture* loaded_win;
+
 // Music
 Mix_Music *backgroundSound;
 Mix_Chunk *put_bomb_sound;
 Mix_Chunk *step_sound;
 Mix_Chunk *explosion_sound;
 Mix_Chunk *die_sound;
+Mix_Chunk *next_door_sound;
+Mix_Chunk *die_slime_sound;
 
 // Bomb timer
 Uint32 bombStart;
@@ -91,9 +100,15 @@ SDL_Texture* Score_Num_Message;
 // Advertising
 SDL_Texture* loaded_adv;
 SDL_Rect adv_rect;
+
 // Background menu
 SDL_Texture* loaded_back_menu;
 SDL_Rect back_menu_rect;
+
+// Press R to restart
+SDL_Texture* Restart_Message;
+SDL_Surface* RestartMessage;
+SDL_Rect Restart_Message_rect;
 
 Uint32  timer_do_pause;
 SDL_Rect Time_rect;
@@ -204,4 +219,5 @@ void menu_score();
 void advertising();
 void new_lvl();
 void addBonus();
+void win();
 #endif

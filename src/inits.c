@@ -9,6 +9,8 @@ void init_sound(int a){
         backgroundSound = Mix_LoadMUS( "/resource/msc/Green Day - Holiday.wav");
         explosion_sound = Mix_LoadWAV( "resource/msc/torpedo_explosion.wav" );
         die_sound = Mix_LoadWAV( "resource/msc/autsch-oh-that-hurts.wav" );
+        next_door_sound = Mix_LoadWAV( "resource/msc/boynextdoor.wav" );
+        die_slime_sound = Mix_LoadWAV("resource/msc/spank-3.wav");
         if( backgroundSound== NULL ) printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
         break;
     case 2:
@@ -85,8 +87,9 @@ void init_texture(){
     loaded_bonus_hp = LoadTexture("resource/ast/PowerUps/PowerUp_Heart.png", renderer);
     loaded_bonus_time = LoadTexture("resource/ast/PowerUps/PowerUp_Time.png", renderer);
     loaded_bonus_score = LoadTexture("resource/ast/PowerUps/PowerUp_Score.png", renderer);
-
-    //door
+    //Win
+    loaded_win = LoadTexture("resource/ast/ui/win.png", renderer);
+    //Door 
     loaded_door = LoadTexture("resource/ast/terrain/Door.png", renderer);
 
 }

@@ -6,6 +6,7 @@ void init(const char *title, int x_pos, int y_pos, int width, int height, bool f
     score_num = 0;
     TTF_Init();
     loaded_bonus = NULL;
+    is_win = false;
     if(fullscreen) flags = SDL_WINDOW_FULLSCREEN;
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0){
         printf("\nTerminal Handler initialized.\n\n");
@@ -37,31 +38,31 @@ void init(const char *title, int x_pos, int y_pos, int width, int height, bool f
 void init_timer() {
     char buffer[10];
     timer_start = SDL_GetTicks();
-    timer_time = 200 - (int)((timer_start - a)/1000);
+    timer_time = 400 - (int)((timer_start - a)/1000);
 
     if(timer_time == 0){
         lose();
     } else if(timer_time < 10) {
-        Time_rect.x = 1690;
+        Time_rect.x = 1775;
         Time_rect.y = 705;
-        Time_rect.w = 46;
+        Time_rect.w = 52;
         Time_rect.h = 95;
         Red.r = 220;
         Red.g = 20; 
         Red.b = 60;
     } else if(timer_time < 100) {
-        Time_rect.x = 1680;
+        Time_rect.x = 1755;
         Time_rect.y = 703;
-        Time_rect.w = 68;
-        Time_rect.h = 97;
+        Time_rect.w = 90;
+        Time_rect.h = 100;
         Red.r = 219;
         Red.g = 196; 
         Red.b = 46;
     } else if(timer_time > 99) {
-        Time_rect.x = 1670;
+        Time_rect.x = 1750;
         Time_rect.y = 700;
-        Time_rect.w = 82;
-        Time_rect.h = 100;
+        Time_rect.w = 100;
+        Time_rect.h = 110;
         Red.r = 50;
         Red.g = 168; 
         Red.b = 145;
@@ -91,7 +92,7 @@ void initIntro() {
     exit_R.x = 800;
     exit_R.y = 760;
     exit_R.w = 400;
-    exit_R.h = 150;        
+    exit_R.h = 150;    
 }
 
 void receiveDamage(){
@@ -330,7 +331,7 @@ void handleEvents(){
                 case SDLK_LEFT: move_left = true; break;
                 case SDLK_RIGHT: move_right = true; break;
                 case SDLK_e: if(!bomb_placed) Bomb(map); break;
-                case SDLK_ESCAPE: 
+                case SDLK_p: 
                     if (!is_pause) {
                         mPausedTicks = SDL_GetTicks();
                         is_pause = true;
@@ -341,10 +342,7 @@ void handleEvents(){
                         is_pause = false; 
                     }
                     break;
-                case SDLK_1: init_sound(1); break;
-                case SDLK_2: init_sound(2); break;
-                case SDLK_3: lose(); break;
-                case SDLK_4: initIntro(); break;
+                case SDLK_ESCAPE: initIntro(); break;
             }
         }
         if(event.type == SDL_KEYUP && !is_lose && !is_intro) switch( event.key.keysym.sym ) {
@@ -395,12 +393,29 @@ void lose() {
     Red.b = 60;
 
     GameOver = TTF_RenderText_Solid(arcade, "G a m e   O v e r", Red);
+    RestartMessage = TTF_RenderText_Solid(arcade, "P r e s s     R     t o    r e s t a r t", Red);
     GameOver_Message = SDL_CreateTextureFromSurface(renderer, GameOver); 
+    Restart_Message = SDL_CreateTextureFromSurface(renderer, RestartMessage); 
+
+    Restart_Message_rect.x = 570;  
+    Restart_Message_rect.y = 700;
+    Restart_Message_rect.w = 900; 
+    Restart_Message_rect.h = 140;
 
     GameOver_Message_rect.x = 600;  
-    GameOver_Message_rect.y = 490;
+    GameOver_Message_rect.y = 400;
     GameOver_Message_rect.w = 800; 
     GameOver_Message_rect.h = 300;
+}
+
+void win() {
+    is_win = true;
+    Win_rect.w = 2000;
+    Win_rect.h = 1280;
+    render();
+    SDL_Delay(3000);
+    is_win = false;
+    initIntro();
 }
 
 void addBonus() {
@@ -413,7 +428,7 @@ void addBonus() {
 	else if (bonus == 2) {
         bonus_start = timer_time;
         loaded_bonus = loaded_bonus_time;
-        bonusTime += 10;
+        bonusTime += 20;
     }
 	else if (bonus == 3) {
         bonus_start = timer_time;
@@ -425,9 +440,6 @@ void addBonus() {
 
 void new_lvl() {
     level_num++;
-    /*if(level_num > 3) {
-        win();
-    }*/
     loaded_bonus = NULL;
     is_lose = false;
     is_pause = false;
@@ -444,10 +456,14 @@ void new_lvl() {
     }
     if(bomb_placed) bombTex = NULL;
     if(explosion_placed) explosionTex = NULL;
-
+    if(level_num > 3) {
+        win();
+    }else {
+    Mix_PlayChannel( -1, next_door_sound, 0 );
     initMenu();
     initMap();
     initGame();
+    }
 
 }
 
@@ -514,9 +530,13 @@ void render(){
     else if (is_lose) {
         SDL_RenderClear(renderer);
         SDL_RenderCopy(renderer, GameOver_Message, NULL, &GameOver_Message_rect);
+        SDL_RenderCopy(renderer, Restart_Message, NULL, &Restart_Message_rect);
         SDL_RenderPresent(renderer);
-    }
-    else {
+    } else if(is_win){
+        SDL_RenderClear(renderer);
+        SDL_RenderCopy(renderer, loaded_win, NULL, &Win_rect);
+        SDL_RenderPresent(renderer);
+    } else {
         SDL_RenderClear(renderer);
         DrawMap();
         SDL_RENDERS_SLIMES();
@@ -636,4 +656,3 @@ void restart(){
     score_num = 0;
     menu_score();
 }
-

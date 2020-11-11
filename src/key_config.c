@@ -256,11 +256,26 @@ void boom(int bomb_power, int map[20][25]){
 
 	t_slime *cur_slime  = slimes;
 	for(int i = 0; cur_slime != NULL; ++i) {
-		if (bomb_R.y / 64 == (cur_slime->slime_R.y + 32)/64 && bomb_R.x / 64 == (cur_slime->slime_R.x + 32)/64) mx_pop_index_slime(&slimes, i);
-		else if ((bomb_R.y - bomb_power*64)/ 64 == (cur_slime->slime_R.y + 32)/64 && bomb_R.x / 64 == (cur_slime->slime_R.x + 32)/64) mx_pop_index_slime(&slimes, i);
-		else if ((bomb_R.y + bomb_power*64)/ 64 == (cur_slime->slime_R.y + 32)/64 && bomb_R.x / 64 == (cur_slime->slime_R.x + 32)/64) mx_pop_index_slime(&slimes, i);
-		else if (bomb_R.y / 64 == (cur_slime->slime_R.y + 32)/64 && (bomb_R.x + bomb_power*64) / 64 == (cur_slime->slime_R.x + 32)/64) mx_pop_index_slime(&slimes, i);
-		else if (bomb_R.y / 64 == (cur_slime->slime_R.y + 32)/64 && (bomb_R.x - bomb_power*64) / 64 == (cur_slime->slime_R.x + 32)/64) mx_pop_index_slime(&slimes, i);
+		if (bomb_R.y / 64 == (cur_slime->slime_R.y + 32)/64 && bomb_R.x / 64 == (cur_slime->slime_R.x + 32)/64) {
+			Mix_PlayChannel( -1, die_slime_sound, 0 );
+			mx_pop_index_slime(&slimes, i);
+			}
+		else if ((bomb_R.y - bomb_power*64)/ 64 == (cur_slime->slime_R.y + 32)/64 && bomb_R.x / 64 == (cur_slime->slime_R.x + 32)/64) {
+			Mix_PlayChannel( -1, die_slime_sound, 0 );
+			mx_pop_index_slime(&slimes, i);
+			}
+		else if ((bomb_R.y + bomb_power*64)/ 64 == (cur_slime->slime_R.y + 32)/64 && bomb_R.x / 64 == (cur_slime->slime_R.x + 32)/64) {
+			Mix_PlayChannel( -1, die_slime_sound, 0 );
+			mx_pop_index_slime(&slimes, i);
+			}
+		else if (bomb_R.y / 64 == (cur_slime->slime_R.y + 32)/64 && (bomb_R.x + bomb_power*64) / 64 == (cur_slime->slime_R.x + 32)/64) {
+			Mix_PlayChannel( -1, die_slime_sound, 0 );
+			mx_pop_index_slime(&slimes, i);
+			}
+		else if (bomb_R.y / 64 == (cur_slime->slime_R.y + 32)/64 && (bomb_R.x - bomb_power*64) / 64 == (cur_slime->slime_R.x + 32)/64) {
+			Mix_PlayChannel( -1, die_slime_sound, 0 );
+			mx_pop_index_slime(&slimes, i);
+			}
 		cur_slime = cur_slime->next;
 	}
 	Mix_PlayChannel(-1, explosion_sound, 0);
