@@ -76,6 +76,13 @@ SDL_Surface* ScoreNumMessage;
 SDL_Texture* Score_Num_Message;
 ///////
 
+// Advertising
+SDL_Texture* loaded_adv;
+SDL_Rect adv_rect;
+// Background menu
+SDL_Texture* loaded_back_menu;
+SDL_Rect back_menu_rect;
+
 Uint32  timer_do_pause;
 SDL_Rect Time_rect;
 SDL_Surface* TimeMessage;
@@ -181,4 +188,5 @@ void lose();
 void reset();
 void init_timer();
 void menu_score();
+void advertising();
 #endif

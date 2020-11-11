@@ -28,36 +28,50 @@ void init(const char *title, int x_pos, int y_pos, int width, int height, bool f
     initMenu();
     initMap();
     menu_score();
+    advertising();
 }
 
 void init_timer() {
-    Red.r = 235;
-    Red.g = 94; 
-    Red.b = 52;
-
-    Time_rect.x = 1670;
-    Time_rect.y = 710;
-    Time_rect.w = 40;
-    Time_rect.h = 70;
-
     char buffer[10];
     timer_start = SDL_GetTicks();
     timer_time = 200 - (int)((timer_start - a)/1000);
-    if(timer_time > 9){
-        Time_rect.x = 1670;
+
+    if(timer_time == 0){
+        lose();
+    } else if(timer_time < 10) {
+        Time_rect.x = 1690;
         Time_rect.y = 705;
-        Time_rect.w = 60;
-        Time_rect.h = 75;
-    }
-    if(timer_time > 99){
+        Time_rect.w = 46;
+        Time_rect.h = 95;
+        Red.r = 220;
+        Red.g = 20; 
+        Red.b = 60;
+    } else if(timer_time < 100) {
+        Time_rect.x = 1680;
+        Time_rect.y = 703;
+        Time_rect.w = 68;
+        Time_rect.h = 97;
+        Red.r = 219;
+        Red.g = 196; 
+        Red.b = 46;
+    } else if(timer_time > 99) {
         Time_rect.x = 1670;
         Time_rect.y = 700;
-        Time_rect.w = 70;
-        Time_rect.h = 80;
+        Time_rect.w = 82;
+        Time_rect.h = 100;
+        Red.r = 50;
+        Red.g = 168; 
+        Red.b = 145;
     }
 
     TimeMessage = TTF_RenderText_Solid(arcade, SDL_itoa(timer_time, buffer, 10), Red);
     Time_Message = SDL_CreateTextureFromSurface(renderer, TimeMessage); 
+}
+void advertising() {
+    adv_rect.x = 1610;
+    adv_rect.y = 900;
+    adv_rect.w = 380;
+    adv_rect.h = 320;
 }
 
 void initIntro() {
@@ -66,15 +80,15 @@ void initIntro() {
     intro_R.w = 2000;
     intro_R.h = 1280;
 
-    play_R.x = 850;
-    play_R.y = 600;
-    play_R.w = 300;
-    play_R.h = 80;
+    play_R.x = 800;
+    play_R.y = 580;
+    play_R.w = 400;
+    play_R.h = 100;
 
-    exit_R.x = 850;
-    exit_R.y = 700;
-    exit_R.w = 300;
-    exit_R.h = 80;    
+    exit_R.x = 800;
+    exit_R.y = 710;
+    exit_R.w = 400;
+    exit_R.h = 100;    
 }
 
 void receiveDamage(){
@@ -109,7 +123,11 @@ void menu_score(){
 
 void initMenu() {
     is_pause = false;
-    	
+
+    back_menu_rect.x = 1600;
+    back_menu_rect.w = 400; 
+    back_menu_rect.h = 1280; 	
+
     menu_Bomb_R.x = 1620;  
     menu_Bomb_R.y = 320;
     menu_Bomb_R.w = 64; 
@@ -289,7 +307,7 @@ void handleEvents(){
         if(is_intro) {
             int mouseX = event.motion.x;
             int mouseY = event.motion.y;
-            if (mouseX > 850 && mouseX < 1150 && mouseY > 600 && mouseY < 680) {
+            if (mouseX > 900 && mouseX < 1300 && mouseY > 600 && mouseY < 650) {
                 switch (event.button.button){
                     case SDL_BUTTON_LEFT: 
                         play_Pressed = true;
@@ -301,7 +319,7 @@ void handleEvents(){
                         break;
                 }             
             }
-            if (mouseX > 850 && mouseX < 1150 && mouseY > 700 && mouseY < 780) {
+            if (mouseX > 900 && mouseX < 1300 && mouseY > 700 && mouseY < 750) {
                 switch (event.button.button){
                     case SDL_BUTTON_LEFT: 
                         exit_Pressed = true;
@@ -375,6 +393,7 @@ void render(){
         SDL_RenderCopy(renderer, playerTex, NULL, &player_R);
         SDL_RenderCopy(renderer, bombTex, NULL, &bomb_R);
         SDL_RenderCopy(renderer, pauseTex, NULL, &pause_R);
+        SDL_RenderCopy(renderer, loaded_back_menu, NULL, &back_menu_rect);
         if (player_hp == 1) SDL_RenderCopy(renderer, loaded_menu_heart, NULL, &menu_Heart1_R);
         if (player_hp == 2) SDL_RenderCopy(renderer, loaded_menu_heart, NULL, &menu_Heart2_R);
         if (player_hp == 3) SDL_RenderCopy(renderer, loaded_menu_heart, NULL, &menu_Heart3_R);
@@ -385,6 +404,7 @@ void render(){
         SDL_RenderCopy(renderer, t_Message, NULL, &t_Message_rect);
         SDL_RenderCopy(renderer, Time_Message, NULL, &Time_rect);
         SDL_RenderCopy(renderer, Score_Num_Message, NULL, &score_num_rect);
+        SDL_RenderCopy(renderer, loaded_adv, NULL, &adv_rect);
         SDL_RenderPresent(renderer);
     }
     else if (is_lose) {
@@ -400,6 +420,7 @@ void render(){
         if(explosion_placed) explosionAnimation(bomb_power, map);
         SDL_RenderCopy(renderer, playerTex, NULL, &player_R);
         SDL_RenderCopy(renderer, bombTex, NULL, &bomb_R);
+        SDL_RenderCopy(renderer, loaded_back_menu, NULL, &back_menu_rect);
         if (player_hp >= 1) SDL_RenderCopy(renderer, loaded_menu_heart, NULL, &menu_Heart1_R);
         if (player_hp >= 2) SDL_RenderCopy(renderer, loaded_menu_heart, NULL, &menu_Heart2_R);
         if (player_hp >= 3) SDL_RenderCopy(renderer, loaded_menu_heart, NULL, &menu_Heart3_R);
@@ -410,6 +431,7 @@ void render(){
         SDL_RenderCopy(renderer, t_Message, NULL, &t_Message_rect);
         SDL_RenderCopy(renderer, Time_Message, NULL, &Time_rect);
         SDL_RenderCopy(renderer, Score_Num_Message, NULL, &score_num_rect);
+        SDL_RenderCopy(renderer, loaded_adv, NULL, &adv_rect);
         SDL_RenderPresent(renderer);
     }
 }

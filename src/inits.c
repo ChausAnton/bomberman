@@ -46,6 +46,9 @@ void init_texture(){
     loaded_explosion_right = LoadTexture("resource/ast/Bomberman/Explosion_Right.png", renderer);
     loaded_explosion_left = LoadTexture("resource/ast/Bomberman/Explosion_Left.png", renderer);
  
+    // Advertising
+    loaded_adv = LoadTexture("resource/ast/ui/1414348347_1735167655.png", renderer);
+
     ground = LoadTexture("resource/ast/terrain/Ground.png", renderer);
     breakable_stone = LoadTexture("resource/ast/terrain/Breakable_Stone.png", renderer);
     stone = LoadTexture("resource/ast/terrain/Stone.png", renderer);
@@ -70,5 +73,6 @@ void init_texture(){
     loaded_exitTexHover = LoadTexture("resource/ast/ui/Exit_Button_MouseOn.png", renderer);
     loaded_exitTexPressed = LoadTexture("resource/ast/ui/Exit_Button_Click.png", renderer);
 
-    introTex = LoadTexture("resource/img/van.png", renderer);
+   introTex = LoadTexture("resource/ast/ui/sss1 (2).png", renderer);
+    loaded_back_menu = LoadTexture("/resource/ast/ui/RMT0Kk (1).png", renderer); 
 }
