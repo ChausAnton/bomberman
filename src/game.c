@@ -557,9 +557,9 @@ void render(){
         SDL_RenderClear(renderer);
         DrawMap();
         SDL_RENDERS_SLIMES();
-        explosionAnimation(bomb_power, map);
+        if(explosion_placed) explosionAnimation(bomb_power, map);
         SDL_RenderCopy(renderer, playerTex, NULL, &player_R);
-        SDL_RenderCopy(renderer, bombTex, NULL, &bomb_R);
+        if(bomb_placed) SDL_RenderCopy(renderer, bombTex, NULL, &bomb_R);
         SDL_RenderCopy(renderer, pauseTex, NULL, &pause_R);
         SDL_RenderCopy(renderer, loaded_back_menu, NULL, &back_menu_rect);
         if (player_hp >= 1) SDL_RenderCopy(renderer, loaded_menu_heart, NULL, &menu_Heart1_R);
@@ -573,7 +573,7 @@ void render(){
         SDL_RenderCopy(renderer, Time_Message, NULL, &Time_rect);
         SDL_RenderCopy(renderer, Score_Num_Message, NULL, &score_num_rect);
         SDL_RenderCopy(renderer, loaded_adv, NULL, &adv_rect);
-        SDL_RenderCopy(renderer, loaded_bonus, NULL, &Bonuse_rect);//////////////
+        if(loaded_bonus != NULL) SDL_RenderCopy(renderer, loaded_bonus, NULL, &Bonuse_rect);//////////////
         SDL_RenderPresent(renderer);
     }
     else if (is_lose) {
@@ -592,7 +592,7 @@ void render(){
         if(bomb_placed) bombAnimation();
         if(explosion_placed) explosionAnimation(bomb_power, map);
         SDL_RenderCopy(renderer, playerTex, NULL, &player_R);
-        SDL_RenderCopy(renderer, bombTex, NULL, &bomb_R);
+        if(bomb_placed) SDL_RenderCopy(renderer, bombTex, NULL, &bomb_R);
         SDL_RenderCopy(renderer, loaded_back_menu, NULL, &back_menu_rect);
         if (player_hp >= 1) SDL_RenderCopy(renderer, loaded_menu_heart, NULL, &menu_Heart1_R);
         if (player_hp >= 2) SDL_RenderCopy(renderer, loaded_menu_heart, NULL, &menu_Heart2_R);
@@ -605,7 +605,7 @@ void render(){
         SDL_RenderCopy(renderer, Time_Message, NULL, &Time_rect);
         SDL_RenderCopy(renderer, Score_Num_Message, NULL, &score_num_rect);
         SDL_RenderCopy(renderer, loaded_adv, NULL, &adv_rect);
-        SDL_RenderCopy(renderer, loaded_bonus, NULL, &Bonuse_rect);//////////////
+        if(loaded_bonus != NULL) SDL_RenderCopy(renderer, loaded_bonus, NULL, &Bonuse_rect);
         SDL_RenderPresent(renderer);
     }
 }
@@ -619,10 +619,7 @@ void clean(){
     Mix_FreeChunk(step_sound);
     step_sound = NULL; 
 
-    SDL_DestroyWindow(window);
-    window =  NULL;    
-    SDL_DestroyRenderer(renderer);
-    renderer = NULL;
+    
 
     // Free loaded text
     SDL_FreeSurface(GameOver);
@@ -641,9 +638,13 @@ void clean(){
     SDL_DestroyTexture(t_Message);
     SDL_DestroyTexture(b_Message);
     SDL_DestroyTexture(s_Message);
-    SDL_DestroyTexture(GameOver_Message);
     SDL_DestroyTexture(playerTex);
-    SDL_DestroyTexture(bombTex);
+
+    SDL_DestroyRenderer(renderer);
+    renderer = NULL;
+
+    SDL_DestroyWindow(window);
+    window =  NULL;    
 
     Mix_Quit();
     IMG_Quit();
