@@ -150,6 +150,7 @@ Uint32 move_start;
 
 // Map
 int map[20][25];
+int level_num;
 
 //Loaded texture
 SDL_Texture *LoadTexture(const char *, SDL_Renderer *);
