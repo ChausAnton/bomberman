@@ -37,6 +37,7 @@ void init_texture(){
     loaded_front = LoadTexture("resource/ast/Bomberman/Bomberman_Front.png", renderer);
     loaded_dead_bomberman = LoadTexture("resource/ast/Bomberman/Bomberman_Dead.png", renderer);
     loaded_bomb = LoadTexture("resource/ast/Bomberman/Bomb1.png", renderer);	
+    loaded_menu_heart = LoadTexture("resource/ast/ui/Heart.png", renderer);
     loaded_menu_bomb = LoadTexture("resource/ast/Bomberman/Bomb1.png", renderer);
     loaded_white_bomb = LoadTexture("resource/ast/Bomberman/White_Bomb.png", renderer);
     loaded_explosion = LoadTexture("resource/ast/Bomberman/Explosion.png", renderer);

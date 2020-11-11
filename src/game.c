@@ -22,6 +22,7 @@ void init(const char *title, int x_pos, int y_pos, int width, int height, bool f
         }
         isRunning = true;
     }
+    player_hp = 3;
     a = 0;
     initGame();
     initMenu();
@@ -30,37 +31,29 @@ void init(const char *title, int x_pos, int y_pos, int width, int height, bool f
 }
 
 void init_timer() {
+    Red.r = 235;
+    Red.g = 94; 
+    Red.b = 52;
+
+    Time_rect.x = 1670;
+    Time_rect.y = 710;
+    Time_rect.w = 40;
+    Time_rect.h = 70;
 
     char buffer[10];
     timer_start = SDL_GetTicks();
     timer_time = 200 - (int)((timer_start - a)/1000);
-
-    if(timer_time == 0){
-        lose();
-    } else if(timer_time < 10) {
-        Time_rect.x = 1690;
+    if(timer_time > 9){
+        Time_rect.x = 1670;
         Time_rect.y = 705;
-        Time_rect.w = 46;
-        Time_rect.h = 95;
-        Red.r = 220;
-        Red.g = 20; 
-        Red.b = 60;
-    } else if(timer_time < 100) {
-        Time_rect.x = 1680;
-        Time_rect.y = 703;
-        Time_rect.w = 68;
-        Time_rect.h = 97;
-        Red.r = 219;
-        Red.g = 196; 
-        Red.b = 46;
-    } else if(timer_time > 99) {
+        Time_rect.w = 60;
+        Time_rect.h = 75;
+    }
+    if(timer_time > 99){
         Time_rect.x = 1670;
         Time_rect.y = 700;
-        Time_rect.w = 82;
-        Time_rect.h = 100;
-        Red.r = 50;
-        Red.g = 168; 
-        Red.b = 145;
+        Time_rect.w = 70;
+        Time_rect.h = 80;
     }
 
     TimeMessage = TTF_RenderText_Solid(arcade, SDL_itoa(timer_time, buffer, 10), Red);
@@ -83,6 +76,12 @@ void initIntro() {
     exit_R.w = 300;
     exit_R.h = 80;    
 }
+
+void receiveDamage(){
+    player_hp--;
+    reset();
+}
+
 void menu_score(){
     
     Red.r = 50;
@@ -104,14 +103,29 @@ void menu_score(){
     ScoreNumMessage = TTF_RenderText_Solid(arcade, SDL_itoa(score_num, buffer, 10), Red);
     Score_Num_Message = SDL_CreateTextureFromSurface(renderer, ScoreNumMessage); 
 }
-void initMenu() {
 
+void initMenu() {
+    is_pause = false;
+    	
     menu_Bomb_R.x = 1620;  
     menu_Bomb_R.y = 320;
     menu_Bomb_R.w = 64; 
     menu_Bomb_R.h = 64; 
 
-    is_pause = false;
+    menu_Heart1_R.x = 1625;  
+    menu_Heart1_R.y = 115;
+    menu_Heart1_R.w = 64; 
+    menu_Heart1_R.h = 64;
+
+    menu_Heart2_R.x = 1695;  
+    menu_Heart2_R.y = 115;
+    menu_Heart2_R.w = 64; 
+    menu_Heart2_R.h = 64;
+
+    menu_Heart3_R.x = 1765;  
+    menu_Heart3_R.y = 115;
+    menu_Heart3_R.w = 64; 
+    menu_Heart3_R.h = 64;
 
     arcade = TTF_OpenFont("resource/ttf/ARCADECLASSIC.TTF", 24);
     
@@ -319,14 +333,18 @@ void lose() {
 void update(){   
     playerMove(player_velocity, map);
     slimeMove(slime_velocity);  
-    if ((bomb_placed || explosion_placed) && bombTime < 3600) bombTime = SDL_GetTicks() - (bombStart + mStartTicks);
-    if (bomb_placed && bombTime > 3000) boom(bomb_power, map);       
-    if (bombTime > 3500) {
+    if ((bomb_placed || explosion_placed) && bombTime < 2600) bombTime = SDL_GetTicks() - (bombStart + mStartTicks);
+    if (bomb_placed && bombTime > 2000) boom(bomb_power, map);       
+    if (bombTime > 2500) {
         explosion_placed = false;
         bombTime = 0;
         bomb_R.x = 0;
         bomb_R.y = 0;
-    }   
+    }
+    if (player_hp < 1) {
+        lose();
+        return;
+    }
 } 
 
 void render(){
@@ -354,6 +372,9 @@ void render(){
         SDL_RenderCopy(renderer, playerTex, NULL, &player_R);
         SDL_RenderCopy(renderer, bombTex, NULL, &bomb_R);
         SDL_RenderCopy(renderer, pauseTex, NULL, &pause_R);
+        if (player_hp == 1) SDL_RenderCopy(renderer, loaded_menu_heart, NULL, &menu_Heart1_R);
+        if (player_hp == 2) SDL_RenderCopy(renderer, loaded_menu_heart, NULL, &menu_Heart2_R);
+        if (player_hp == 3) SDL_RenderCopy(renderer, loaded_menu_heart, NULL, &menu_Heart3_R);
         SDL_RenderCopy(renderer, loaded_menu_bomb, NULL, &menu_Bomb_R);
         SDL_RenderCopy(renderer, h_Message, NULL, &h_Message_rect);
         SDL_RenderCopy(renderer, b_Message, NULL, &b_Message_rect);
@@ -376,6 +397,9 @@ void render(){
         if(explosion_placed) explosionAnimation(bomb_power, map);
         SDL_RenderCopy(renderer, playerTex, NULL, &player_R);
         SDL_RenderCopy(renderer, bombTex, NULL, &bomb_R);
+        if (player_hp >= 1) SDL_RenderCopy(renderer, loaded_menu_heart, NULL, &menu_Heart1_R);
+        if (player_hp >= 2) SDL_RenderCopy(renderer, loaded_menu_heart, NULL, &menu_Heart2_R);
+        if (player_hp >= 3) SDL_RenderCopy(renderer, loaded_menu_heart, NULL, &menu_Heart3_R);
         SDL_RenderCopy(renderer, loaded_menu_bomb, NULL, &menu_Bomb_R);
         SDL_RenderCopy(renderer, h_Message, NULL, &h_Message_rect);
         SDL_RenderCopy(renderer, b_Message, NULL, &b_Message_rect);
@@ -395,25 +419,20 @@ void clean(){
     put_bomb_sound = NULL;
     Mix_FreeChunk(step_sound);
     step_sound = NULL; 
-    Mix_FreeChunk(die_sound);
-    die_sound = NULL;
-    Mix_FreeChunk(explosion_sound);
-    explosion_sound = NULL;
-    
-    // Free window
+
     SDL_DestroyWindow(window);
     window =  NULL;    
     SDL_DestroyRenderer(renderer);
     renderer = NULL;
 
-    ///Free loaded text
+    // Free loaded text
     SDL_FreeSurface(GameOver);
     SDL_FreeSurface(healthMessage);
     SDL_FreeSurface(timeMessage);
     SDL_FreeSurface(scoreMessage);
     SDL_FreeSurface(bombMessage);
 
-    //Free Loaded textures
+    // Free Loaded textures
     SDL_DestroyTexture(loaded_front);
     SDL_DestroyTexture(loaded_bomb);
     SDL_DestroyTexture(loaded_explosion);
@@ -435,7 +454,7 @@ void clean(){
     printf("Game cleaned.\n\n");
 }
 
-void restart(){
+void reset() {
     is_lose = false;
     is_pause = false;
     is_intro = false;
@@ -450,6 +469,27 @@ void restart(){
     if(bomb_placed) bombTex = NULL;
     if(explosion_placed) explosionTex = NULL;
 
+    initMenu();
+    initMap();
+    initGame();
+}
+
+void restart(){
+    is_lose = false;
+    is_pause = false;
+    is_intro = false;
+    move_up = false;
+    move_down = false;
+    move_left = false;
+    move_right = false;
+    bombTime = 0;
+    while(slimes != NULL) {
+		mx_pop_index_slime(&slimes, 0);
+    }
+    if(bomb_placed) bombTex = NULL;
+    if(explosion_placed) explosionTex = NULL;
+    player_hp = 3;
+
     a = SDL_GetTicks();
     Mix_FreeChunk(die_sound);
     die_sound = NULL;
@@ -460,7 +500,6 @@ void restart(){
     score_num = 0;
     menu_score();
 }
-
 void pauseMenu(){
     //restart();
 }

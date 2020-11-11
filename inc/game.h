@@ -36,7 +36,11 @@ SDL_Surface *gScreenSurface;
 
 // Player
 SDL_Rect player_R;
+SDL_Rect menu_Heart1_R;
+SDL_Rect menu_Heart2_R;
+SDL_Rect menu_Heart3_R;
 int player_velocity;
+int player_hp;
 
 // Bomb
 SDL_Rect bomb_R;
@@ -61,11 +65,6 @@ Uint32  timer_start;
 int timer_time;
 Uint32 a;
 
-Uint32  timer_do_pause;
-SDL_Rect Time_rect;
-SDL_Surface* TimeMessage;
-SDL_Texture* Time_Message;
-
 // TXT Necessaries
 TTF_Font *arcade;
 SDL_Color White;
@@ -76,6 +75,11 @@ SDL_Rect score_num_rect;
 SDL_Surface* ScoreNumMessage;
 SDL_Texture* Score_Num_Message;
 ///////
+
+Uint32  timer_do_pause;
+SDL_Rect Time_rect;
+SDL_Surface* TimeMessage;
+SDL_Texture* Time_Message;
 
 SDL_Surface* healthMessage;
 SDL_Surface* bombMessage;
@@ -152,6 +156,7 @@ SDL_Texture *loaded_bomb;
 SDL_Texture *loaded_white_bomb;
 SDL_Texture *loaded_explosion;
 SDL_Texture *loaded_menu_bomb;
+SDL_Texture *loaded_menu_heart;
 SDL_Texture *loaded_explosion_up;
 SDL_Texture *loaded_explosion_left;
 SDL_Texture *loaded_explosion_down;
@@ -163,7 +168,7 @@ void init(const char *title, int x_pos, int y_pos, int width, int height, bool f
 void initGame();
 void initMenu();
 void initMap();
-
+void receiveDamage();
 void handleEvents();
 void update();
 void render();
@@ -173,6 +178,7 @@ void pauseMenu();
 void init_texture();
 void init_sound(int);
 void lose();
+void reset();
 void init_timer();
 void menu_score();
 #endif
