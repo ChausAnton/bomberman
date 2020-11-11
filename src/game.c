@@ -33,6 +33,7 @@ void init(const char *title, int x_pos, int y_pos, int width, int height, bool f
     initMap();
     menu_score();
     advertising();
+    initIntro();
 }
 
 void init_timer() {
@@ -79,6 +80,7 @@ void advertising() {
 }
 
 void initIntro() {
+    Mix_PlayMusic(backgroundSound, -1);
     is_intro = true;
 
     intro_R.w = 2000;
@@ -120,6 +122,7 @@ void menu_score(){
         score_num_rect.w = 82;
         score_num_rect.h = 100;
     }
+
     char buffer[10];
     ScoreNumMessage = TTF_RenderText_Solid(arcade, SDL_itoa(score_num, buffer, 10), Red);
     Score_Num_Message = SDL_CreateTextureFromSurface(renderer, ScoreNumMessage); 
@@ -138,17 +141,17 @@ void initMenu() {
     Bonuse_rect.h = 64;
 
 
-    menu_Heart1_R.x = 1625;  
+    menu_Heart1_R.x = 1670;  
     menu_Heart1_R.y = 115;
     menu_Heart1_R.w = 64; 
     menu_Heart1_R.h = 64;
 
-    menu_Heart2_R.x = 1695;  
+    menu_Heart2_R.x = 1770;  
     menu_Heart2_R.y = 115;
     menu_Heart2_R.w = 64; 
     menu_Heart2_R.h = 64;
 
-    menu_Heart3_R.x = 1765;  
+    menu_Heart3_R.x = 1860;  
     menu_Heart3_R.y = 115;
     menu_Heart3_R.w = 64; 
     menu_Heart3_R.h = 64;
@@ -162,7 +165,7 @@ void initMenu() {
     healthMessage = TTF_RenderText_Solid(arcade, " H e a lth ", White);
     bombMessage = TTF_RenderText_Solid(arcade, " B o n u s", White);
     scoreMessage = TTF_RenderText_Solid(arcade, " S c o r e ", White); 
-    timeMessage = TTF_RenderText_Solid(arcade, " Ti m e ", White);
+    timeMessage = TTF_RenderText_Solid(arcade, " Ti m e r ", White);
 
     h_Message = SDL_CreateTextureFromSurface(renderer, healthMessage); 
     h_Message_rect.x = 1600;  
@@ -193,7 +196,7 @@ void initMenu() {
 }
 
 void initGame() {
-    is_lose = false;
+   is_lose = false;
     player_R.h = 64;
     player_R.w = 64;
 
@@ -326,7 +329,7 @@ void initMap(){
     {5,0,2,0,2,0,2,1,2,1,2,1,2,1,2,0,2,0,2,1,2,1,2,0,6},
     {5,1,0,1,0,1,0,0,0,1,1,1,0,1,1,1,0,0,1,0,1,1,1,1,6},
     {5,1,2,0,2,1,2,1,2,1,2,0,2,1,2,1,2,1,2,1,2,1,2,1,6},
-    {5,1,1,0,1,0,0,0,1,0,0,0,1,1,1,1,0,0,0,1,0,1,0,0,6},// player 64, 18*64
+    {5,1,1,0,1,0,0,0,1,0,0,0,1,1,1,1,0,0,0,1,0,1,0,0,6},
     {9,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,10},
     };
     if(level_num == 1)
@@ -379,7 +382,9 @@ void handleEvents(){
                         is_pause = false; 
                     }
                     break;
-                case SDLK_ESCAPE: initIntro(); break;
+                case SDLK_ESCAPE: 
+                    initIntro();
+                    break;
             }
         }
         if(event.type == SDL_KEYUP && !is_lose && !is_intro) switch( event.key.keysym.sym ) {
@@ -397,6 +402,7 @@ void handleEvents(){
             if (mouseX > 800 && mouseX < 1200 && mouseY > 590 && mouseY < 720) {
                 switch (event.button.button){
                     case SDL_BUTTON_LEFT: 
+                        Mix_HaltMusic();
                         play_Pressed = true;
                         render();
                         SDL_Delay(200);
@@ -459,7 +465,13 @@ void addBonus() {
     if (bonus == 1) {
         bonus_start = timer_time;
         loaded_bonus = loaded_bonus_hp;
-        if (player_hp < 3) player_hp++;
+        if (player_hp < 3) {
+            player_hp++;
+        }
+        else {  
+            score_num += 100;
+            menu_score();
+        }
         render();
     }
 	else if (bonus == 2) {
@@ -470,7 +482,7 @@ void addBonus() {
 	else if (bonus == 3) {
         bonus_start = timer_time;
         loaded_bonus = loaded_bonus_score;
-        score_num += 250;
+        score_num += 100;
         menu_score();
     }
 }
@@ -488,7 +500,7 @@ void new_lvl() {
     bombTime = 0;
     while(slimes != NULL) {
 		mx_pop_index_slime(&slimes, 0);
-        score_num -= 100;
+        score_num -= 200;
         menu_score();
     }
     if(bomb_placed) bombTex = NULL;

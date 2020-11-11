@@ -6,7 +6,7 @@ void init_sound(int a){
     case 1:
         step_sound = Mix_LoadWAV( "resource/msc/minecraft_move_on_ground.wav" );
         put_bomb_sound = Mix_LoadWAV( "resource/msc/penetration.wav" );
-        backgroundSound = Mix_LoadMUS( "/resource/msc/Green Day - Holiday.wav");
+        backgroundSound = Mix_LoadMUS( "resource/msc/menu_sound.wav");
         explosion_sound = Mix_LoadWAV( "resource/msc/torpedo_explosion.wav" );
         die_sound = Mix_LoadWAV( "resource/msc/autsch-oh-that-hurts.wav" );
         next_door_sound = Mix_LoadWAV( "resource/msc/boynextdoor.wav" );
@@ -14,12 +14,6 @@ void init_sound(int a){
         if( backgroundSound== NULL ) printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
         break;
     case 2:
-        step_sound = Mix_LoadWAV( "resource/msc/minecraft_move_on_ground.wav" );
-        put_bomb_sound = Mix_LoadWAV( "resource/msc/sex.wav" );
-        explosion_sound = Mix_LoadWAV( "resource/msc/augh.wav" );
-        backgroundSound = Mix_LoadMUS( "/resource/msc/Green Day - Holiday.wavqwewq");
-        die_sound = Mix_LoadWAV( "resource/msc/boynextdoor.wav" );
-        if( backgroundSound== NULL ) printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
         Mix_PlayMusic(backgroundSound, -1);
         break;
     default:

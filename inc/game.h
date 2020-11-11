@@ -220,4 +220,5 @@ void advertising();
 void new_lvl();
 void addBonus();
 void win();
+void initIntro();
 #endif
