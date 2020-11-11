@@ -78,6 +78,9 @@ void initIntro() {
 }
 
 void receiveDamage(){
+    playerTex =  loaded_dead_bomberman;
+    render();
+    SDL_Delay(500);
     player_hp--;
     reset();
 }
@@ -466,6 +469,8 @@ void reset() {
     while(slimes != NULL) {
 		mx_pop_index_slime(&slimes, 0);
     }
+    score_num = 0;
+    menu_score();
     if(bomb_placed) bombTex = NULL;
     if(explosion_placed) explosionTex = NULL;
 
