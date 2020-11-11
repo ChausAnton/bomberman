@@ -35,7 +35,7 @@ void init(const char *title, int x_pos, int y_pos, int width, int height, bool f
 void init_timer() {
     char buffer[10];
     timer_start = SDL_GetTicks();
-    timer_time = 400 - (int)((timer_start - a)/1000);
+    timer_time = (400 + bonusTime) - (int)((timer_start - a)/1000);
 
     if(timer_time == 0){
         lose();
@@ -478,8 +478,8 @@ void addBonus() {
     }
 	else if (bonus == 2) {
         bonus_start = timer_time;
-        loaded_bonus = loaded_bonus_time;
         bonusTime += 20;
+        loaded_bonus = loaded_bonus_time;
     }
 	else if (bonus == 3) {
         bonus_start = timer_time;
