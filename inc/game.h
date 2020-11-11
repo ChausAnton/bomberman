@@ -71,6 +71,7 @@ Mix_Chunk *explosion_sound;
 Mix_Chunk *die_sound;
 Mix_Chunk *next_door_sound;
 Mix_Chunk *die_slime_sound;
+Mix_Chunk *win_sound;
 
 // Bomb timer
 Uint32 bombStart;

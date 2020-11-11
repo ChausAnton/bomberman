@@ -11,6 +11,7 @@ void init_sound(int a){
         die_sound = Mix_LoadWAV( "resource/msc/autsch-oh-that-hurts.wav" );
         next_door_sound = Mix_LoadWAV( "resource/msc/boynextdoor.wav" );
         die_slime_sound = Mix_LoadWAV("resource/msc/spank-3.wav");
+        win_sound = Mix_LoadWAV("resource/msc/win_sound.wav");
         if( backgroundSound== NULL ) printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
         break;
     case 2:
